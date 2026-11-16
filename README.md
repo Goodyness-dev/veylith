@@ -194,41 +194,74 @@ sequenceDiagram
 
 ## Guided demonstration: click by click
 
-### Updated 3D visual workbench
+### The mission in one sentence
 
-Desktop windows at least 960 CSS pixels wide and 600 CSS pixels high use a viewport-based mission layout: reviewer controls on the left, the 3D checkpoint in the center, two application previews on the right, and compact mission actions below. Narrower or shorter windows retain normal page scrolling rather than clipping controls. Dialogs can scroll independently when their content exceeds available height.
+**Deliver the exact approved app to both agents, then prove that substituted bytes and revoked permission cannot get through.**
 
-A nine-step chat tutorial opens on first visit. Next/Back explain the mission and highlight relevant sections; they never approve or submit actions. Skip or close the guide, and use **Mission guide** at the bottom left to replay it. Completion is remembered in browser local storage.
+The interface presents this as **Operation: Exact Delivery**. You operate the second reviewer and request deliveries to two agents. The signing and authorization operations use real local demo identities and a real contract on QoreChain's Diana testnet. The world, drone and storefront artwork explain those operations visually.
 
-Signing progress is shared between the side panel and the 3D scene. Six physical checkpoint segments and a labeled track follow server-reported signing, approval checking, scoped-window opening, submission, chain confirmation and completion. Counts indicate completed stages, not elapsed time or estimated transaction percentages. On desktop the signing panel leaves the world visible; narrow screens use a larger overlay.
+Quick route:
 
-The scene is now presented as **Operation: Exact Delivery**, an interactive mission with a cargo drone, a QoreChain checkpoint and two application stations. Drag to orbit, scroll to zoom and click the hangar, checkpoint or destination screens. The HTML mission buttons expose the same actions if WebGL is unavailable or pointer navigation is inconvenient.
+**Inspect → approve → wait for confirmation → North → South → swap package → North refuses → restore → revoke → South refuses → inspect evidence.**
 
-The four objectives are authorization, delivery to both destinations, substituted-byte refusal, and revoked-release refusal. Objective badges accumulate from observed chain and agent results during the current browser session; they are not awarded for animations, and a reload resets that session tracking. Existing persisted state may satisfy an objective when it is first observed. They are an explanatory checklist rather than an external security score or official drill result.
+```mermaid
+flowchart LR
+    A[Inspect exact release] --> B[Approve as reviewer 2]
+    B --> C[Wait for Diana confirmation]
+    C --> D[Install at North and South]
+    D --> E[Swap hosted bytes]
+    E --> F[North refuses mismatch]
+    F --> G[Restore original bytes]
+    G --> H[Revoke permission]
+    H --> I[South refuses revoked release]
+    I --> J[Inspect transactions and reports]
+```
 
-The drone, environment and storefront artwork are game presentation around the existing configuration-release workflow. Orbiting the world does not send transactions. Clicking the checkpoint opens the local demo reviewer panel; requesting delivery invokes an actual deployment agent. No signing secrets are exposed to the 3D scene.
+### 1. Open the local mission
 
-The local workbench now uses Three.js for a release package, rotating authorization rings and delivery particles. These are explanatory visualizations; operation labels come from actual server stages rather than a fabricated progress percentage.
+Start `npm run dev` and keep its terminal running. Open **http://127.0.0.1:5173/** on the same computer. Press **Ctrl+Shift+R** if you are seeing an older interface.
 
-On connection, the first local demo reviewer signs an exact proposal for the next sequence. Click **Review & approve as reviewer 2** to open the local signing panel, inspect the target/sequence/fingerprint and approve using the second local identity. This is not a browser-wallet extension prompt. The UI follows signing, contract simulation, scoped-window opening, transaction submission and receipt confirmation. A first signature alone does not mean the release has on-chain authorization.
+Use localhost for the interactive mission. The Vercel version is a public verifier with signing and agent actions disabled. It reads current chain state and separately labels recorded evidence. It cannot run the local demo identities or access your local agents.
 
-Use **Download verified release** or **Verify & install again** on the larger Orbit Commerce app previews. Each preview reflects its agent's persisted configuration. The previous-layout comparison, catalog artwork and static storefront copy are illustrative; the downloaded and validated payload remains the bounded JSON configuration. The visuals do not claim a binary installer or container deployment.
+Wait for the Diana connection. A connection error means the app cannot currently verify permission, so deployment must remain held. Use **Refresh chain** after restoring connectivity. Do not repeatedly click signing buttons through a network error.
 
-Older button names below describe the same operations. **Inspect the release** remains available, and the primary authorization action now opens the explicit reviewer panel before signing.
+### 2. Find your controls
 
-### Before starting
+On desktop windows at least 960 CSS pixels wide and 600 CSS pixels high, the interface uses a compact viewport layout:
 
-1. Start the local server with `npm run dev` from the repository root. Keep that terminal running.
-2. Open **http://127.0.0.1:5173** on the same computer. Do not use the public Vercel page for these actions.
-3. Wait for the Diana connection. A connection error means the app cannot currently verify chain state; it must hold deployments.
-4. Click **Refresh chain** if necessary. If the page says **PUBLIC VERIFIER**, you are viewing the hosted read-only version.
-5. Check whether **Restore original bytes** is offered. If it is, click it before your first valid deployment.
-6. Existing applications may already show `v1.0.0`. Their persistent state survives restarts. This is expected.
-7. Do not run `proof:testnet` at the same time as your manual walkthrough: it changes the same controller sequence and agent state.
+| Area | What it contains |
+|---|---|
+| Left | Orbit Commerce release, maintainer approval, your reviewer identity and signing action. |
+| Center | Interactive 3D hangar, cargo drone, QoreChain checkpoint and destination stations. |
+| Right | North and South application previews, install results and comparison controls. |
+| Bottom | Four mission objectives and the corresponding action buttons. |
+| Header | Evidence sheet and network status. |
+| Bottom left | Mission guide replay button. |
 
-### Step 1 — inspect the release
+Narrower or shorter windows retain scrolling so controls remain accessible. Long dialogs may scroll independently.
 
-Click **Inspect the release**. You should see:
+### 3. Use the chat tutorial
+
+A nine-step chat guide opens on first visit. Use **Next**, **Back**, **Skip guide** or its close button. The guide highlights the section being explained. Reopen it using **Mission guide** at the bottom left.
+
+**Tutorial navigation never signs, authorizes, deploys, swaps bytes or revokes permission.** It only explains. You must explicitly choose an operation to perform it. Guide completion is remembered in browser local storage; replay is always available.
+
+### 4. Explore the 3D world
+
+| World object / gesture | Meaning or action |
+|---|---|
+| Release hangar and cargo drone | The exact release file being delivered. Click the hangar/cargo to inspect it. |
+| Central QoreChain checkpoint | Contract-enforced permission. Click it to open your reviewer panel. |
+| North and South screens | Independent local agent destinations. Click a destination screen to request verification and delivery. |
+| Drag the scene | Orbit the camera. This does not send a transaction. |
+| Scroll over the scene | Zoom the camera. This does not send a transaction. |
+| Mission buttons | Accessible alternatives to clicking 3D objects. |
+
+The drone and particles illustrate the journey. A passing animation is not evidence of successful installation. Read the agent result and applied sequence. If WebGL is unavailable, use the HTML mission buttons.
+
+### 5. Inspect the cargo
+
+Click the hangar. The release viewer shows the bounded configuration and its manifest:
 
 ```json
 {
@@ -238,69 +271,158 @@ Click **Inspect the release**. You should see:
 }
 ```
 
-Read the manifest below it. The manifest names the intended project/environment/version and artifact fingerprint. Close the dialog with its close button or Escape. This viewer is not an encrypted review packet.
+The configuration drives the application preview. The manifest names the version, project, environment and artifact fingerprint. A fingerprint is calculated from exact bytes, including formatting. Changing the downloaded file should change its fingerprint.
 
-Say: “This is the file we want to deploy. Our permission will name its exact fingerprint.”
+The viewer is not an encrypted review packet. Close the dialog after inspecting it.
 
-### Step 2 — authorize a fresh sequence
+### 6. Wait for the first reviewer
 
-Click **Authorize release**, or **Authorize next sequence** if the current release is already authorized. Wait for the operation to finish. It involves chain reads, two local signatures, a native window transaction, an EVM authorization transaction and a window-close transaction. Slow testnet/network conditions can extend the wait.
+The **Release maintainer** should say **Signed this exact next release**. The server prepares a genuine ML-DSA-87 signature for the next exact proposal using the first local demo identity.
 
-Expected result: **PQ VERIFIED**, an authorization transaction in the evidence sheet, and a sequence higher than the previous one. After the recorded walkthrough's sequence 2 revocation, the next successful authorization should be sequence 3, unless another operator action has occurred.
+That single signature is not on-chain authorization. The controller requires two distinct reviewer approvals. You operate the second identity. These are separate keys on one machine, not two independent human reviewers.
 
-Say: “Our contract has checked both post-quantum reviewer signatures. It now permits this exact release.”
+If the label remains **Preparing real first signature…**, wait or inspect the connection error. Do not assume approval exists when preparation failed.
 
-If the operation errors, refresh current chain state before retrying. A transaction may have confirmed even if a later network request or window-close operation failed. Never infer failure solely from the UI error.
+### 7. Approve as reviewer 2
 
-### Step 3 — deploy North
+Choose any of these equivalent controls:
 
-Click **Deploy** under North. If North already has a previous configuration, the button may say **Verify again**. The same button initiates a new agent check.
+- **Review & approve as reviewer 2** on the left.
+- **01 · Review & sign** in the mission controls.
+- The checkpoint in the 3D world.
 
-Expected result: North reports **APPLIED**, with the new sequence and an observed block. Its mini application displays the approved banner. If its previous release was already `1.0.0`, the banner may look unchanged; the changed sequence and new report prove this was a fresh operation.
+Read the signing panel before proceeding:
 
-Say: “North independently downloaded the bytes and checked current permission before applying them.”
+| Field | Expected meaning |
+|---|---|
+| Application | Orbit Commerce. |
+| Environment | Production on Diana. |
+| First reviewer | Has signed this exact proposal. |
+| Sequence | The next authorization counter; its value depends on previous actions. |
+| Digest / fingerprint | The exact proposal you are approving. |
 
-### Step 4 — deploy South
+Click **Approve with my local demo identity** to sign and submit. Opening the panel alone does not authorize anything. This is our local signer UI, **not a QoreX wallet extension popup**. It uses the second identity stored on the local machine.
 
-Click South's **Deploy** or **Verify again** button. Wait for its own result.
+### 8. Follow the real progress stages
 
-Expected result: South independently reports **APPLIED** for the same new release sequence. It is a second process with a separate persistent state file, not just a second animation.
+The signing panel sits to the side on desktop, leaving the 3D world visible. Six physical checkpoint segments and a matching labeled track follow shared server-reported progress:
 
-Say: “South performs its own verification. Both agents accepted the approved release.”
+| Stage | Actual operation |
+|---|---|
+| Sign | The second local identity signs the exact proposal. |
+| Check approvals | The app simulates the contract call using both PQ approvals. |
+| Open window | A hybrid native transaction opens a bounded, target-scoped EVM window. |
+| Submit | The EVM authorization transaction is sent to Diana. |
+| Confirm | The app waits for the transaction receipt. |
+| Confirmed | The authorization transaction succeeded; the helper also closes its EVM window. |
 
-### Step 5 — replace hosted bytes
+The contract's simulation is a preflight check. Inclusion and execution in the actual authorization transaction establish the on-chain result.
 
-Click **Replace hosted bytes**. This changes what the local artifact endpoint returns; it does not change the approved fingerprint on-chain.
+**The track counts completed stages, not elapsed time.** “4 / 6 stages complete” is not an estimate that only one-third of the wait remains. Chain confirmation can be much slower than signing, and fast stages may pass too quickly to notice.
 
-Click North's **Verify again**. Expected refusal: **Artifact hash mismatch**. The expected and observed fingerprints differ. North's existing applied configuration remains intact. The red lane represents that refusal.
+Wait until the operation finishes. The scene/mission should show authorization and the current sequence should advance. Choose **Continue to app delivery** or close the panel when permitted.
 
-Say: “The download address is the same, but the contents changed. The agent rejects the substituted file.”
+If an operation errors, refresh chain state before retrying. A transaction may already have confirmed even if a later network read or window-close operation failed. Never infer a failed transaction solely from the UI error.
 
-### Step 6 — restore the file and demonstrate replay protection
+### 9. Deliver to North
 
-Click **Restore original bytes**. Click North's **Verify again** without authorizing a new sequence.
+Click **02 · Send to North**, North's 3D screen, or its **Download verified release / Verify & install again** button.
 
-Expected refusal: **Sequence already applied**. This is a successful protection check. The original bytes are back, but North has already applied this permission.
+North independently:
 
-Say: “Even the correct file cannot reuse a deployment sequence this agent has already applied.”
+1. Reads current permission from Diana.
+2. Downloads the manifest and release file through HTTP.
+3. Checks their exact fingerprints against approval.
+4. Checks the target, expiry, policy epoch and persistent sequence.
+5. Rechecks authorization before application.
+6. Atomically persists the validated configuration and returns a result.
 
-### Step 7 — revoke authorization
+Expected result: **Verified configuration installed**, with the new applied sequence and observed block in North's preview area.
 
-Click **Revoke authorization** and wait for confirmation. Revocation is itself a new PQ-approved controller action and advances the sequence.
+North might already look installed from an earlier rehearsal. Saved agent state survives restarts. If its previous configuration was also version 1.0.0, the banner may not change. **Use the new sequence and agent result to confirm a fresh operation.**
 
-Expected result: **REVOKED**. Click South's **Verify again**. Expected refusal: **Release revoked**. South's existing application still shows the previously applied configuration.
+### 10. Deliver to South
 
-Say: “Permission has been withdrawn. Future deployment attempts stop. This does not undo a deployment already applied.”
+Click **03 · Send to South**, its station or its install button. Wait for South's independent result.
 
-### Step 8 — inspect and export the proof
+South is a separate Node process with its own persistent state. North's success does not install anything at South. The delivery objective clears after the UI observes both agents applied the current authorized sequence.
 
-Click **Evidence**. Read the network, contract, observed block, approved artifact hash, manifest hash and controller action history. Compare agent outcomes with those actions. Use **Download public evidence** to export the local workbench state.
+Use **Compare illustrative previous layout ↔** to switch an application preview between the basic “before” design and its installed storefront presentation. This comparison is illustrative; it does not uninstall or roll back the actual configuration. Static catalog text and product artwork are visual fixtures, not additional downloaded executable payloads.
 
-The local export is a current workbench snapshot. The Vercel export additionally separates current chain state from the committed recorded walkthrough. Historical action lists do not claim to be a complete on-chain event index.
+### 11. Try a counterfeit
 
-### Step 9 — repeat the demo
+Click **⚡ Swap the package**. This changes the bytes returned by the local artifact endpoint without changing the approved fingerprint on-chain.
 
-Restore original hosted bytes, authorize the next sequence, then deploy again. Keep persistent agent history. You do not need to delete local files or reset the controller. A new sequence makes the next legitimate demonstration possible.
+Now click **02 · Send to North** again.
+
+Expected result: **Artifact hash mismatch**. The refusal is success for this objective. North's existing configuration remains intact because the substituted bytes must not be applied.
+
+The counterfeit objective clears from the actual refusal report, not from a red visual effect. This is a controlled attack demonstration against our own local artifact host.
+
+### 12. Restore and test replay protection
+
+Click **↶ Restore package**. The artifact endpoint serves the original bytes again.
+
+Optionally request North delivery again **without authorizing a fresh sequence**.
+
+Expected result: **Sequence already applied**. The bytes are correct, but North already used this permission. That is replay protection working, not a broken installation.
+
+### 13. Revoke permission
+
+Click **⏻ Revoke access**. This performs another PQ-approved controller action. Wait for confirmation; revocation advances the sequence and marks the release revoked.
+
+Then click **03 · Send to South** again.
+
+Expected result: **Release revoked**. The original file can remain unchanged, but permission for future application has been withdrawn.
+
+South's existing installed storefront remains visible. **Revocation stops future application; it does not uninstall a prior deployment.** The final objective clears when the UI observes a revoked-release refusal.
+
+### 14. Inspect the evidence
+
+Open **Evidence** in the header. Check the network, controller, observed block, artifact and manifest fingerprints, authorization/revocation transactions and agent reports. Use **Download public evidence** to save the local workbench snapshot.
+
+The local export is current workbench state. The Vercel export separates current chain state from the committed recorded walkthrough. Action lists are local/recorded history, not a complete chain event index.
+
+Agent success signatures are Ed25519, distinct from reviewer ML-DSA-87 signatures. A signed report authenticates the reporting agent's statement; it is not remote attestation or proof that the agent executed honestly.
+
+### 15. Understand the four objectives
+
+| Objective | What clears it |
+|---|---|
+| Unlock the checkpoint | Observing a non-revoked, nonzero release authorization. |
+| Deliver the genuine app | Observing both agents' applied sequences matching the current authorized sequence. |
+| Catch the counterfeit | An observed **Artifact hash mismatch** refusal. |
+| Close the route | Observing revocation together with a **Release revoked** agent refusal. |
+
+Objectives accumulate from results observed during the current browser session. Refreshing resets that session tracking, although existing real state may satisfy an objective when observed again. Four completed objectives are an explanatory checklist, not an independent security score, a guarantee that code is safe, or an official Q-Day Drill result.
+
+### 16. Play again without deleting history
+
+1. Restore the original package if it is still swapped.
+2. Open the reviewer panel and approve the next sequence.
+3. Deliver to North and South.
+4. Repeat substitution, restoration and revocation.
+
+Do not delete the applied-state journals to make the demo appear fresh. They are the agents' replay history. **A fresh sequence is the correct way to repeat a legitimate installation.** Restarting the server does not reset chain state.
+
+### 17. If something looks wrong
+
+| What you see | What to do |
+|---|---|
+| Tutorial is covering a control | Close it or use Skip guide. Replay it later from Mission guide. |
+| Buttons disabled on Vercel | Expected: open localhost for interactive signing and agent actions. |
+| App already shows version 1.0.0 | Authorize a fresh sequence; use the resulting sequence/report to distinguish the new application. |
+| First signature still preparing | Wait for current network reads; inspect errors before retrying. |
+| Progress waits at confirmation | The testnet is still being checked. Do not assume a fixed completion time. |
+| Signing reports an error after submission | Refresh chain state before repeating the write. |
+| Hash mismatch while testing a valid install | Restore the original package. |
+| Sequence already applied | Authorize a new sequence if you want a fresh legitimate installation. |
+| Release revoked | Authorize a new release sequence before another legitimate install. |
+| RPC unavailable / stale chain | Restore connectivity and refresh. Keep the existing deployment; never bypass checks. |
+| 3D unavailable or difficult to click | Use the labeled HTML mission and installation buttons. |
+
+Avoid running `npm run proof:testnet` while performing the manual mission: it changes the same controller and agent state. See [troubleshooting](#troubleshooting) for additional recovery guidance.
+
 
 ## A three-minute video plan
 
