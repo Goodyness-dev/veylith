@@ -426,6 +426,14 @@ Avoid running `npm run proof:testnet` while performing the manual mission: it ch
 
 ## A three-minute video plan
 
+### Built-in silent recorder
+
+The local workbench includes **Record guided demo** near the bottom left. Choose **Choose tab & start recording**, then select the localhost browser tab in Chrome/Edge's capture chooser. Browser consent must be supplied by the operator; an agent cannot silently grant tab-capture permission. Keep that tab visible and avoid manual interactions during the take.
+
+After capture permission, the recorder drives real local/testnet operations: inspect the release, prepare reviewer 1, authorize with reviewer 2, install through North/South, substitute bytes and check refusal, restore and check replay, revoke and check refusal, then display evidence. Each expected operation result is checked; unexpected results stop the run and label the take incomplete. This changes the controller/agent state and consumes test QOR, so do not run a manual mission or the proof script simultaneously.
+
+The recorder adds captions and produces no audio. Long network waits are paused after several seconds and resumed on completion; a visible label discloses shortened waits. This is not a continuous wall-clock recording or an estimate of performance. MP4 is selected if supported by the browser; otherwise the download is WebM, which can be imported into a video editor and exported as MP4 with narration. The take ends revoked and includes downloadable operation results. Always review the entire saved video and its duration before submitting. Browser capture and final recording output require operator verification; a passing source build does not establish a completed video.
+
 **For your video, use the local workbench.** The Vercel version was prepared as a public verifier; its signing and deployment controls are disabled. Public deployment itself hasn't been confirmed.
 
 | Approximate time | Screen action | Suggested narration |
