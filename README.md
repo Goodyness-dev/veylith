@@ -428,6 +428,12 @@ Avoid running `npm run proof:testnet` while performing the manual mission: it ch
 
 ### Built-in silent recorder
 
+Use **Fresh take** to clear transient reports/notices, restore original hosted bytes, discard a pending proposal and reset the mission checklist. This resets presentation only: blockchain history and agent anti-replay journals are preserved. Previous installations are retained and labeled; the fresh-take preview waits for a new authorization sequence. The recorder performs this reset automatically and verifies its new authorized sequence is ahead of the agents' persisted sequences before delivery.
+
+During the recorded walkthrough, **Artifact hash mismatch**, **Sequence already applied** and **Release revoked** are expected protection results at their respective test steps. They are still actual agent refusals, but the recorder labels matched results as protection checks rather than presenting them as unexpected operation failures. A refusal during the initial legitimate installation still stops the take.
+
+Recording captions now use a narrow bottom strip. Desktop recording gives the 3D world more horizontal room and reduces secondary mission text. Browser capture/layout must still be checked in the saved recording.
+
 The local workbench includes **Record guided demo** near the bottom left. Choose **Choose tab & start recording**, then select the localhost browser tab in Chrome/Edge's capture chooser. Browser consent must be supplied by the operator; an agent cannot silently grant tab-capture permission. Keep that tab visible and avoid manual interactions during the take.
 
 After capture permission, the recorder drives real local/testnet operations: inspect the release, prepare reviewer 1, authorize with reviewer 2, install through North/South, substitute bytes and check refusal, restore and check replay, revoke and check refusal, then display evidence. Each expected operation result is checked; unexpected results stop the run and label the take incomplete. This changes the controller/agent state and consumes test QOR, so do not run a manual mission or the proof script simultaneously.

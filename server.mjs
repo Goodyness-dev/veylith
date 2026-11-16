@@ -3,6 +3,7 @@ import {client,contract,accounts,authorization,window,close,evmWallet,signatures
 const port=Number(process.env.PORT??5173);const vite=await createViteServer({server:{middlewareMode:true,fs:{strict:true,allow:[fileURLToPath(new URL('./',import.meta.url))],deny:['.env','.env.*','**/.git/**','**/.local/**','**/*.{crt,pem,key}']}},appType:'spa'});
 await fs.mkdir(local,{recursive:true});const manifest=encodeManifest(manifestFor());let tampered=false,busy=false,lastError=null;
 let proposal=null,progress={stage:'idle',message:'Ready for your review',reviewerCount:0};
+let presentationBaseline='0';
 function step(stage,message,extra={}){progress={...progress,stage,message,...extra};}
 async function prepareRelease(){
  const c=await contract(),reviewers=await accounts(),state=await authorization(),block=await client.getBlock();
@@ -30,7 +31,7 @@ try{step('submitting','Sending the signed release to Diana');const hash=await ev
 }finally{await close(reviewers[0]);}}
 async function state(){let deployment,chain,error;try{deployment=await contract();chain=await authorization();}catch(e){error=e.shortMessage??e.message;}
 const applied={};for(const id of ['north','south'])try{applied[id]=await readJson(new URL(`agents/${id}/applied.json`,local));}catch(e){if(e.code!=='ENOENT')throw e;}
-return {mode:'Live Diana · local demo signers',ready:!!chain,chain,error,lastError,busy,tampered,artifactHash:keccak256(bundle),observedHash:keccak256(tampered?Buffer.from('{"release":"9.9.9","banner":"Substituted bytes","accent":"#ef6b5c"}\n'):bundle),manifest:manifestFor(),manifestHash:keccak256(manifest),contract:deployment?.address,reviewers:deployment?.reviewers,threshold:deployment?.threshold,reports,applied,transactions};}
+return {mode:'Live Diana · local demo signers',presentationBaseline,ready:!!chain,chain,error,lastError,busy,tampered,artifactHash:keccak256(bundle),observedHash:keccak256(tampered?Buffer.from('{"release":"9.9.9","banner":"Substituted bytes","accent":"#ef6b5c"}\n'):bundle),manifest:manifestFor(),manifestHash:keccak256(manifest),contract:deployment?.address,reviewers:deployment?.reviewers,threshold:deployment?.threshold,reports,applied,transactions};}
 const server=http.createServer(async(req,res)=>{
 const host=req.headers.host;const allowedHost=host===`127.0.0.1:${port}`||host===`localhost:${port}`;if(!allowedHost){res.writeHead(403);return res.end('Local host required');}
 const url=new URL(req.url,`http://${host}`);
@@ -45,7 +46,7 @@ if(req.headers.origin!==`http://${host}`||req.headers['content-type']!=='applica
 if(busy)return json(res,409,{error:'An operation is already running'});
 let size=0,parts=[];for await(const part of req){size+=part.length;if(size>4096)return json(res,413,{error:'Request too large'});parts.push(part);}const body=JSON.parse(Buffer.concat(parts).toString()||'{}');
 busy=true;lastError=null;
-try{let result;if(url.pathname==='/api/prepare')result=await prepareRelease();else if(url.pathname==='/api/authorize')result=await writeRelease(false);else if(url.pathname==='/api/revoke')result=await writeRelease(true);else if(url.pathname==='/api/tamper'){if(typeof body.enabled!=='boolean')throw new Error('Choose enabled boolean');tampered=body.enabled;result={tampered};}else if(url.pathname==='/api/deploy'){if(!['north','south'].includes(body.identity))throw new Error('Unknown deployment agent');result=await deploy(body.identity);}else return json(res,404,{error:'Unknown operation'});json(res,200,{result});}finally{busy=false;}
+try{let result;if(url.pathname==='/api/reset-demo'){const current=await authorization();presentationBaseline=String(BigInt(current.sequence)+1n);tampered=false;proposal=null;for(const id of Object.keys(reports))delete reports[id];step('idle','Fresh take ready. Sign a new sequence.',{reviewerCount:0});result={presentationBaseline,historyPreserved:true};}else if(url.pathname==='/api/prepare')result=await prepareRelease();else if(url.pathname==='/api/authorize')result=await writeRelease(false);else if(url.pathname==='/api/revoke')result=await writeRelease(true);else if(url.pathname==='/api/tamper'){if(typeof body.enabled!=='boolean')throw new Error('Choose enabled boolean');tampered=body.enabled;result={tampered};}else if(url.pathname==='/api/deploy'){if(!['north','south'].includes(body.identity))throw new Error('Unknown deployment agent');result=await deploy(body.identity);}else return json(res,404,{error:'Unknown operation'});json(res,200,{result});}finally{busy=false;}
 }catch(e){lastError=(e.shortMessage??e.message).slice(0,600);step('error',lastError);json(res,503,{error:lastError});}
 });
 server.listen(port,'127.0.0.1',()=>console.log(`Veylith Local: http://127.0.0.1:${port}`));
