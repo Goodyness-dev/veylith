@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {relayBounds} from '../lib/relay-policy.mjs';
+test('relay window is one transaction with precisely rounded fee exposure',()=>{assert.deepEqual(relayBounds(3500000n,100000000000n),{blocks:20,maxTxs:1,maxValue:'350000'});assert.equal(relayBounds(1n,1n).maxValue,'1');assert.equal(relayBounds(1n,1000000000001n).maxValue,'2');});
+test('relay refuses excessive fee exposure and invalid inputs',()=>{assert.throws(()=>relayBounds(3500000n,1000000000000n),/exceeds/);assert.throws(()=>relayBounds(0n,1n),/Positive/);assert.throws(()=>relayBounds(1n,0n),/Positive/);});

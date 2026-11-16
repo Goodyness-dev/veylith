@@ -79,6 +79,20 @@ The test doubles under `contracts/test/` exist solely for Hardhat error-path tes
 
 ## Threat model and limits
 
+### Dedicated relayer: keeping the drill account's EVM window closed
+
+Release and revocation submissions now use a separate low-balance relayer account. The original drill identity still signs reviewer approvals, but the runtime does not open its EVM window. The relayer is not a reviewer and has no contract administration role. The contract already accepts unrelated relayers with valid PQ approvals, so no replacement deployment or contract-address change is required.
+
+Run `npm run setup:relayer` once on the local machine before using the updated workbench. It creates an ignored local relay identity, bootstraps it with 2 test QOR if needed, registers its PQ key, and ensures the drill account's existing window is closed. No real funds are used. Missing relay configuration fails closed; there is no fallback to opening a reviewer/drill window.
+
+Each release window on the relayer is limited to the controller target, one transaction and 20 blocks. Its value allowance is rounded upward from that transaction's gas limit times its selected gas price, rather than the former fixed 3-QOR allowance. Exposure above 1 test QOR is refused. The window is closed in cleanup, including error paths. The relayer may need more testnet funds after repeated demonstrations.
+
+This removes the runtime window race from the classical key supplied for the original drill account. It does not eliminate the same race if the separate relayer's classical key is also compromised, nor does it guarantee zero fees, uninterrupted availability or official drill survival. Do not submit the relay account's key instead of the designated drill account key. Existing setup/deployment helpers are bootstrap tooling; do not redeploy from the drill identity during the event.
+
+`node scripts/proof-relayer.mjs` rehearses a harmless classical-only drill-account transaction rejection and a valid two-reviewer release via the separate relayer. It submits a real testnet authorization and writes `evidence/relayer-proof.json`; it is not an official bot result. Window state is sampled before and after, not continuously attested.
+
+Because EVM submissions now originate from the relayer, they do **not** themselves satisfy the event's normal-transaction requirement for the registered drill identity. During the organizer's required drill window, run `node scripts/drill-heartbeat.mjs` to send a hybrid-signed native self-transfer from that identity, then submit its transaction hash in the official drill flow. This needs no drill-account EVM window. A run before the drill does not count.
+
 The demo assumes a classical publishing/relayer key or artifact host can be compromised while the required PQ reviewer quorum remains uncompromised. Approvals authenticate permission for bytes; they do not prove the software is safe. A compromised reviewer quorum can authorize malicious content. An agent must actually enforce the checks; another pipeline can ignore them. The controlled payload changes a JSON configuration, not a container image or arbitrary program.
 
 Agents check fresh observed chain state and recheck before application. There remains a race between the final chain observation and the local write; this prototype does not provide atomic transactions across a blockchain and filesystem, remote attestation or a formal finality guarantee. A crashed agent may leave a lock requiring operator inspection. Revocation stops future applications observed after revocation; it cannot undo prior deployment or erase previously decrypted data.
@@ -481,7 +495,7 @@ Stop a manually launched server with **Ctrl+C** in its terminal. Restarting rese
 | Command | Effect |
 |---|---|
 | `npm run dev` | Starts loopback server, frontend and two agent processes. |
-| `npm test` | Runs 13 contract checks, 10 agent checks and three public-verifier checks; does not submit testnet writes. |
+| `npm test` | Runs 13 contract checks, 10 agent checks, three public-verifier checks and two relay-policy checks; does not submit testnet writes. |
 | `npm run build` | Builds the frontend into `dist`; does not deploy a contract or start agents. |
 | `npm run setup:testnet` | Prepares/reuses local disposable identities, registers keys and deploys/reuses a controller. Uses test funds. |
 | `npm run proof:testnet` | Requires local server; executes nine live walkthrough checks, submits transactions and ends revoked. Updates the public evidence file. |

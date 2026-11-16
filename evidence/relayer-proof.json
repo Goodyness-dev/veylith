@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-16T22:19:43.927Z",
+  "controller": "0x9700232112bda62e79f20ceb862ed5e6182b9872",
+  "relayer": {
+    "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+    "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+  },
+  "sequence": "15",
+  "hash": "0x8ea11fa55ae091bce2dff0f99387d5e3ead7e2e55398f586dbe8cdf6b20db1c0",
+  "bounds": {
+    "blocks": 20,
+    "maxTxs": 1,
+    "maxValue": "492188"
+  },
+  "checks": {
+    "relayerHasNoReviewerRole": true,
+    "classicalOnlyDrillTransactionRejected": true,
+    "validTwoReviewerReleaseAccepted": true,
+    "drillWindowClosedBefore": true,
+    "drillWindowClosedAfter": true,
+    "relayWindowClosedAfter": true
+  },
+  "scope": "Self-rehearsal, not the official Q-Day Drill. Windows were sampled before and after; runtime never opens the drill account window."
+}
