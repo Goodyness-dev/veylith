@@ -194,6 +194,16 @@ sequenceDiagram
 
 ## Guided demonstration: click by click
 
+### Updated 3D visual workbench
+
+The local workbench now uses Three.js for a release package, rotating authorization rings and delivery particles. These are explanatory visualizations; operation labels come from actual server stages rather than a fabricated progress percentage.
+
+On connection, the first local demo reviewer signs an exact proposal for the next sequence. Click **Review & approve as reviewer 2** to open the local signing panel, inspect the target/sequence/fingerprint and approve using the second local identity. This is not a browser-wallet extension prompt. The UI follows signing, contract simulation, scoped-window opening, transaction submission and receipt confirmation. A first signature alone does not mean the release has on-chain authorization.
+
+Use **Download verified release** or **Verify & install again** on the larger Orbit Commerce app previews. Each preview reflects its agent's persisted configuration. The previous-layout comparison, catalog artwork and static storefront copy are illustrative; the downloaded and validated payload remains the bounded JSON configuration. The visuals do not claim a binary installer or container deployment.
+
+Older button names below describe the same operations. **Inspect the release** remains available, and the primary authorization action now opens the explicit reviewer panel before signing.
+
 ### Before starting
 
 1. Start the local server with `npm run dev` from the repository root. Keep that terminal running.
