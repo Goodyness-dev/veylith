@@ -1,0 +1,15 @@
+.git
+.local
+.env*
+node_modules
+artifacts
+cache
+dist
+server.mjs
+agent
+scripts
+test
+contracts
+lib/chain.mjs
+*.pem
+*.key

@@ -37,6 +37,12 @@ The proof ends with the release revoked. Already applied demo configurations rem
 
 ## Run locally
 
+### Vercel public verifier
+
+`vercel.json` builds the Vite frontend and deploys read-only `/api/state` and `/api/proof` functions. The public page queries the current Diana controller; recorded actions and test evidence are dated separately. It does not run reviewer signers or local agent processes. A failed chain read never substitutes the historical chain snapshot as live state.
+
+Import this GitHub repository into Vercel using the Vite preset, or run `npx vercel --prod` after Vercel login. No signing environment variables are needed. `.vercelignore` excludes local runtime/signing material; public API imports have no dependency on `lib/chain.mjs` or the local signer service.
+
 Node.js 24 and npm were used for verification. Install and run the public checks:
 
 ```sh
