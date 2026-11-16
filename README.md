@@ -196,6 +196,12 @@ sequenceDiagram
 
 ### Updated 3D visual workbench
 
+The scene is now presented as **Operation: Exact Delivery**, an interactive mission with a cargo drone, a QoreChain checkpoint and two application stations. Drag to orbit, scroll to zoom and click the hangar, checkpoint or destination screens. The HTML mission buttons expose the same actions if WebGL is unavailable or pointer navigation is inconvenient.
+
+The four objectives are authorization, delivery to both destinations, substituted-byte refusal, and revoked-release refusal. Objective badges accumulate from observed chain and agent results during the current browser session; they are not awarded for animations, and a reload resets that session tracking. Existing persisted state may satisfy an objective when it is first observed. They are an explanatory checklist rather than an external security score or official drill result.
+
+The drone, environment and storefront artwork are game presentation around the existing configuration-release workflow. Orbiting the world does not send transactions. Clicking the checkpoint opens the local demo reviewer panel; requesting delivery invokes an actual deployment agent. No signing secrets are exposed to the 3D scene.
+
 The local workbench now uses Three.js for a release package, rotating authorization rings and delivery particles. These are explanatory visualizations; operation labels come from actual server stages rather than a fabricated progress percentage.
 
 On connection, the first local demo reviewer signs an exact proposal for the next sequence. Click **Review & approve as reviewer 2** to open the local signing panel, inspect the target/sequence/fingerprint and approve using the second local identity. This is not a browser-wallet extension prompt. The UI follows signing, contract simulation, scoped-window opening, transaction submission and receipt confirmation. A first signature alone does not mean the release has on-chain authorization.
