@@ -282,6 +282,8 @@ Restore original hosted bytes, authorize the next sequence, then deploy again. K
 
 ## A three-minute video plan
 
+**For your video, use the local workbench.** The Vercel version was prepared as a public verifier; its signing and deployment controls are disabled. Public deployment itself hasn't been confirmed.
+
 | Approximate time | Screen action | Suggested narration |
 |---|---|---|
 | 0:00–0:20 | Main screen | “An approved software download can be replaced before deployment. Veylith binds permission to the exact bytes.” |
