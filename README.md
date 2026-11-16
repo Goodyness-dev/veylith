@@ -196,6 +196,8 @@ sequenceDiagram
 
 ### Updated 3D visual workbench
 
+Desktop windows at least 960 CSS pixels wide and 600 CSS pixels high use a viewport-based mission layout: reviewer controls on the left, the 3D checkpoint in the center, two application previews on the right, and compact mission actions below. Narrower or shorter windows retain normal page scrolling rather than clipping controls. Dialogs can scroll independently when their content exceeds available height.
+
 A nine-step chat tutorial opens on first visit. Next/Back explain the mission and highlight relevant sections; they never approve or submit actions. Skip or close the guide, and use **Mission guide** at the bottom left to replay it. Completion is remembered in browser local storage.
 
 Signing progress is shared between the side panel and the 3D scene. Six physical checkpoint segments and a labeled track follow server-reported signing, approval checking, scoped-window opening, submission, chain confirmation and completion. Counts indicate completed stages, not elapsed time or estimated transaction percentages. On desktop the signing panel leaves the world visible; narrow screens use a larger overlay.
