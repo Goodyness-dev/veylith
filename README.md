@@ -196,6 +196,10 @@ sequenceDiagram
 
 ### Updated 3D visual workbench
 
+A nine-step chat tutorial opens on first visit. Next/Back explain the mission and highlight relevant sections; they never approve or submit actions. Skip or close the guide, and use **Mission guide** at the bottom left to replay it. Completion is remembered in browser local storage.
+
+Signing progress is shared between the side panel and the 3D scene. Six physical checkpoint segments and a labeled track follow server-reported signing, approval checking, scoped-window opening, submission, chain confirmation and completion. Counts indicate completed stages, not elapsed time or estimated transaction percentages. On desktop the signing panel leaves the world visible; narrow screens use a larger overlay.
+
 The scene is now presented as **Operation: Exact Delivery**, an interactive mission with a cargo drone, a QoreChain checkpoint and two application stations. Drag to orbit, scroll to zoom and click the hangar, checkpoint or destination screens. The HTML mission buttons expose the same actions if WebGL is unavailable or pointer navigation is inconvenient.
 
 The four objectives are authorization, delivery to both destinations, substituted-byte refusal, and revoked-release refusal. Objective badges accumulate from observed chain and agent results during the current browser session; they are not awarded for animations, and a reload resets that session tracking. Existing persisted state may satisfy an objective when it is first observed. They are an explanatory checklist rather than an external security score or official drill result.

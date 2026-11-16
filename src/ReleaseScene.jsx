@@ -39,12 +39,18 @@ export default function ReleaseScene(props){
   const stars=new Float32Array(360*3);for(let i=0;i<360;i++){stars[i*3]=Math.sin(i*7.12)*32;stars[i*3+1]=4+(i%17);stars[i*3+2]=Math.cos(i*3.79)*30;}const starGeo=new THREE.BufferGeometry();starGeo.setAttribute('position',new THREE.BufferAttribute(stars,3));scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0x9dbbe5,size:.035})));
   for(let i=0;i<18;i++){const tower=box(scene,.2+(i%3)*.3,1+(i%5)*.6,.4,black,-12+i*1.5,-.1,-9-(i%3));box(tower,.08,.12,.43,cyan,0,.6,0);}
   const particles=[];for(let i=0;i<40;i++){const m=new THREE.Mesh(new THREE.OctahedronGeometry(.055),cyan);scene.add(m);particles.push(m);}
+  const progressStages=['signing','checking','window','submitting','confirming','confirmed'];
+  const progressBars=[];for(let i=0;i<6;i++)progressBars.push(box(scene,.65,.17,.22,metal,-2+i*.8,3.8,0));
+  const progressCaption=label('SIGN / CHECK / SUBMIT / CONFIRM',0,4.4,0,'#c6fa71');
   const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let down;
   function pointerdown(e){down={x:e.clientX,y:e.clientY};}
   function pointerup(e){if(!down||Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)return;const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(hits)[0];if(hit)live.current.onAction?.(hit.object.userData.action);}
   renderer.domElement.addEventListener('pointerdown',pointerdown);renderer.domElement.addEventListener('pointerup',pointerup);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let frame;const clock=new THREE.Clock();
   function draw(){const t=reduced?0:clock.getElapsedTime(),s=live.current;
+   const stage=progressStages.indexOf(s.phase),complete=s.phase==='confirmed'?6:Math.max(0,stage);
+   progressCaption.visible=stage>=0;
+   progressBars.forEach((bar,i)=>{bar.visible=stage>=0;bar.material=i<complete?green:i===stage?gold:metal;bar.scale.y=i===stage&&!reduced?1+Math.sin(t*5)*.25:1;});
    gate.children.forEach((r,i)=>{r.rotation.z=t*(s.working?.45:.08)*(i%2?1:-1);});shield.visible=!s.approved||s.tampered;shield.material.color.set(s.tampered?0xff617c:0x65efee);shield.material.opacity=s.working?.22:.1;
    ship.position.y=1+Math.sin(t*1.7)*.12;ship.rotation.y=Math.sin(t*.5)*.12;
    const flight=s.download&&s.approved&&!s.tampered?(t*.25)%1:0;ship.position.x=-6+flight*11;ship.position.z=flight>.55?(flight-.55)*2.2*(s.target==='south'?3:-3):0;
