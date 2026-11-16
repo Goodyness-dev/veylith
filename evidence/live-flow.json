@@ -1,0 +1,163 @@
+{
+  "checkedAt": "2026-11-16T10:50:00.621Z",
+  "controller": "0x9700232112bda62e79f20ceb862ed5e6182b9872",
+  "checks": [
+    {
+      "name": "Two-reviewer PQ release confirmed on Diana",
+      "pass": true
+    },
+    {
+      "name": "north process fetches and applies authorized bytes",
+      "pass": true
+    },
+    {
+      "name": "north report signature verifies",
+      "pass": true
+    },
+    {
+      "name": "south process fetches and applies authorized bytes",
+      "pass": true
+    },
+    {
+      "name": "south report signature verifies",
+      "pass": true
+    },
+    {
+      "name": "Replaced hosted bytes refused by independent agent",
+      "pass": true
+    },
+    {
+      "name": "Persistent sequence rejects repeated application",
+      "pass": true
+    },
+    {
+      "name": "PQ revocation stops further delivery",
+      "pass": true
+    },
+    {
+      "name": "Already applied configurations remain after revocation",
+      "pass": true
+    }
+  ],
+  "approved": {
+    "action": "authorized",
+    "hash": "0x7135333fce5bb89f066ecd6bd1c3af04bc6f523bb4ec766ff0d6c3ba9cccc434",
+    "digest": "0x1df5a4a226f6fbfbc201102be200ecf069d627fb8b5ef999b666dc26d62be4db",
+    "sequence": "1",
+    "block": "10190259",
+    "at": "2026-11-16T10:49:05.738Z"
+  },
+  "revoked": {
+    "action": "revoked",
+    "hash": "0xe3c6a5bdc92da3b0c20d1c0d35ec6951f850c62a18e543d63af8e9f50020e512",
+    "digest": "0x875408f96b8d0146b1f0cf86ced08a54a7591650344e083dc660b29c1494b34e",
+    "sequence": "2",
+    "block": "10190279",
+    "at": "2026-11-16T10:49:33.289Z"
+  },
+  "final": {
+    "mode": "Live Diana · local demo signers",
+    "ready": true,
+    "chain": {
+      "project": "0x000d44bf14d493156a67b7b831dd2346b06ad573be62dbb8aa1caf1dd435b341",
+      "environment": "0x572d9d34c2795f4a414e0f89c184fecb9a4bfb275d84b3d40628cbb425b45476",
+      "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
+      "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
+      "sequence": "2",
+      "deadline": "1794833361",
+      "policyEpoch": "1",
+      "currentPolicyEpoch": "1",
+      "revoked": true,
+      "block": "10190296",
+      "chainTime": "1794826195",
+      "contract": "0x9700232112bda62e79f20ceb862ed5e6182b9872"
+    },
+    "lastError": null,
+    "busy": false,
+    "tampered": false,
+    "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
+    "observedHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
+    "manifest": {
+      "format": "veylith-release-v1",
+      "project": "0x000d44bf14d493156a67b7b831dd2346b06ad573be62dbb8aa1caf1dd435b341",
+      "environment": "0x572d9d34c2795f4a414e0f89c184fecb9a4bfb275d84b3d40628cbb425b45476",
+      "version": "1.0.0",
+      "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a"
+    },
+    "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
+    "contract": "0x9700232112bda62e79f20ceb862ed5e6182b9872",
+    "reviewers": [
+      {
+        "name": "Release maintainer",
+        "native": "qor1p2nf2u4kpp2smxuuruqr959z3eeapmlkncxlkr",
+        "evm": "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6"
+      },
+      {
+        "name": "Security reviewer",
+        "native": "qor16ym4tg4wq837unfa3rlkwv2u29szduvjwlrnuq",
+        "evm": "0xd13755A2AE01e3Ee4D3d88ff67315c516026f192"
+      }
+    ],
+    "threshold": 2,
+    "reports": {
+      "north": {
+        "identity": "north",
+        "outcome": "refused",
+        "reason": "Sequence already applied",
+        "at": "2026-11-16T10:49:20.885Z"
+      },
+      "south": {
+        "identity": "south",
+        "outcome": "refused",
+        "reason": "Release revoked",
+        "at": "2026-11-16T10:49:55.205Z"
+      }
+    },
+    "applied": {
+      "north": {
+        "identity": "north",
+        "sequence": "1",
+        "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
+        "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
+        "block": "10190267",
+        "config": {
+          "release": "1.0.0",
+          "banner": "The release you approved.",
+          "accent": "#91d8ba"
+        },
+        "appliedAt": "2026-11-16T10:49:17.414Z"
+      },
+      "south": {
+        "identity": "south",
+        "sequence": "1",
+        "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
+        "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
+        "block": "10190269",
+        "config": {
+          "release": "1.0.0",
+          "banner": "The release you approved.",
+          "accent": "#91d8ba"
+        },
+        "appliedAt": "2026-11-16T10:49:19.856Z"
+      }
+    },
+    "transactions": [
+      {
+        "action": "authorized",
+        "hash": "0x7135333fce5bb89f066ecd6bd1c3af04bc6f523bb4ec766ff0d6c3ba9cccc434",
+        "digest": "0x1df5a4a226f6fbfbc201102be200ecf069d627fb8b5ef999b666dc26d62be4db",
+        "sequence": "1",
+        "block": "10190259",
+        "at": "2026-11-16T10:49:05.738Z"
+      },
+      {
+        "action": "revoked",
+        "hash": "0xe3c6a5bdc92da3b0c20d1c0d35ec6951f850c62a18e543d63af8e9f50020e512",
+        "digest": "0x875408f96b8d0146b1f0cf86ced08a54a7591650344e083dc660b29c1494b34e",
+        "sequence": "2",
+        "block": "10190279",
+        "at": "2026-11-16T10:49:33.289Z"
+      }
+    ]
+  }
+}
