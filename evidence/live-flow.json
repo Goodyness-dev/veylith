@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-16T22:21:15.797Z",
+  "checkedAt": "2026-11-18T07:49:48.097Z",
   "controller": "0x9700232112bda62e79f20ceb862ed5e6182b9872",
   "checks": [
     {
@@ -41,10 +41,10 @@
   ],
   "approved": {
     "action": "authorized",
-    "hash": "0x39d25ca2d55473554e2c1e2ed073eb46d3847c3a24cddaac49144c0820d79fb4",
-    "digest": "0x654da5cff4fe8dcdfe93edfd3e44f021d60d0f54fbdde197c8300dc3aba1cb1c",
-    "sequence": "16",
-    "block": "10219332",
+    "hash": "0x99493e6173e5c233d134e497e232f86f5cf9690732f2b21e17a689d41fe8fb47",
+    "digest": "0x6ec01177862cd4a2a72a02bd63d86e70303eaa07f09c4f8d8c5936bd55b4f09b",
+    "sequence": "18",
+    "block": "10303724",
     "relayer": {
       "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
       "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
@@ -54,14 +54,14 @@
       "maxTxs": 1,
       "maxValue": "492188"
     },
-    "at": "2026-11-16T22:20:50.308Z"
+    "at": "2026-11-18T07:49:12.586Z"
   },
   "revoked": {
     "action": "revoked",
-    "hash": "0xbbd1cdf9a515a273e549918ce1f9ff15384f9f2a8e20febcfb2c7fc23fe095e9",
-    "digest": "0x5ad515f40307b18b5cfbcb7c60931c622a36987199fa083b2ff18795a0fc964f",
-    "sequence": "17",
-    "block": "10219347",
+    "hash": "0xdee11d772742c0ecdbebadbda9537a46018198cf96f74d11d473804b8bd943db",
+    "digest": "0x68a361ebd4496cecd6720d20fc28c9a4b19988e59ee416f1d3beb38a744a5b10",
+    "sequence": "19",
+    "block": "10303747",
     "relayer": {
       "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
       "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
@@ -71,7 +71,7 @@
       "maxTxs": 1,
       "maxValue": "492188"
     },
-    "at": "2026-11-16T22:21:13.124Z"
+    "at": "2026-11-18T07:49:44.837Z"
   },
   "final": {
     "mode": "Live Diana · local demo signers",
@@ -82,13 +82,13 @@
       "environment": "0x572d9d34c2795f4a414e0f89c184fecb9a4bfb275d84b3d40628cbb425b45476",
       "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
       "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
-      "sequence": "17",
-      "deadline": "1794874855",
+      "sequence": "19",
+      "deadline": "1794995362",
       "policyEpoch": "1",
       "currentPolicyEpoch": "1",
       "revoked": true,
-      "block": "10219352",
-      "chainTime": "1794867672",
+      "block": "10303752",
+      "chainTime": "1794988184",
       "contract": "0x9700232112bda62e79f20ceb862ed5e6182b9872"
     },
     "lastError": null,
@@ -123,41 +123,41 @@
         "identity": "north",
         "outcome": "refused",
         "reason": "Sequence already applied",
-        "at": "2026-11-16T22:20:55.728Z"
+        "at": "2026-11-18T07:49:23.412Z"
       },
       "south": {
         "identity": "south",
         "outcome": "refused",
         "reason": "Release revoked",
-        "at": "2026-11-16T22:21:14.414Z"
+        "at": "2026-11-18T07:49:46.291Z"
       }
     },
     "applied": {
       "north": {
         "identity": "north",
-        "sequence": "16",
+        "sequence": "18",
         "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
         "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
-        "block": "10219336",
+        "block": "10303730",
         "config": {
           "release": "1.0.0",
           "banner": "The release you approved.",
           "accent": "#91d8ba"
         },
-        "appliedAt": "2026-11-16T22:20:52.452Z"
+        "appliedAt": "2026-11-18T07:49:15.660Z"
       },
       "south": {
         "identity": "south",
-        "sequence": "16",
+        "sequence": "18",
         "artifactHash": "0x5d671be95ea47b1620938bec414ae91c8366775cafbdcee9392b00aeddd50d0a",
         "manifestHash": "0x06ccee50b41a2bb8e9fb53541a4e7d935988ee0c127225ea6a91e912609f4873",
-        "block": "10219338",
+        "block": "10303733",
         "config": {
           "release": "1.0.0",
           "banner": "The release you approved.",
           "accent": "#91d8ba"
         },
-        "appliedAt": "2026-11-16T22:20:54.558Z"
+        "appliedAt": "2026-11-18T07:49:21.156Z"
       }
     },
     "transactions": [
@@ -306,6 +306,40 @@
           "maxValue": "492188"
         },
         "at": "2026-11-16T22:21:13.124Z"
+      },
+      {
+        "action": "authorized",
+        "hash": "0x99493e6173e5c233d134e497e232f86f5cf9690732f2b21e17a689d41fe8fb47",
+        "digest": "0x6ec01177862cd4a2a72a02bd63d86e70303eaa07f09c4f8d8c5936bd55b4f09b",
+        "sequence": "18",
+        "block": "10303724",
+        "relayer": {
+          "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+          "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+        },
+        "window": {
+          "blocks": 20,
+          "maxTxs": 1,
+          "maxValue": "492188"
+        },
+        "at": "2026-11-18T07:49:12.586Z"
+      },
+      {
+        "action": "revoked",
+        "hash": "0xdee11d772742c0ecdbebadbda9537a46018198cf96f74d11d473804b8bd943db",
+        "digest": "0x68a361ebd4496cecd6720d20fc28c9a4b19988e59ee416f1d3beb38a744a5b10",
+        "sequence": "19",
+        "block": "10303747",
+        "relayer": {
+          "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+          "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+        },
+        "window": {
+          "blocks": 20,
+          "maxTxs": 1,
+          "maxValue": "492188"
+        },
+        "at": "2026-11-18T07:49:44.837Z"
       }
     ]
   }
