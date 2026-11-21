@@ -1,6 +1,6 @@
 # ReleaseController audit record
 
-**QCAI status:** Stage 1 report pending. Stage 2 follows disposition of all Stage 1 findings. The tests below document the security boundary exercised by the prototype.
+**QCAI status.** Stage 1 was exported on 21 November 2026. The report scored the contract 65/100, rated it High, and listed six findings. Each finding has a disposition below. Stage 2 is ready to run in the same EVM/Solidity setting.
 
 ## Deployment and audit input
 
@@ -23,9 +23,20 @@ Hardhat uses local precompile doubles. The [Diana walkthrough](../evidence/live-
 
 ## QCAI reports and finding dispositions
 
-After Stage 1, place the original dated PDF under `docs/audit/`. Record each report finding by ID and severity, cite the affected source, and link its fix, named regression test or rationale. Run Stage 2 only after every finding has a disposition. Save its dated PDF in the same directory and record any residual findings. If contract code changes, record the audited commit and the matching live deployment before changing the submission's controller details.
-
 | Stage | Report | Source |
 | --- | --- | --- |
-| 1 | Pending | `d420449fafeeb49b2ea50ade39cb8ceadcd810ea` |
-| 2 | Pending Stage 1 response | To be recorded |
+| 1 | [21 November 2026, original QCAI export](audit/2026-11-21-stage-1-qcai.pdf) | `ReleaseController.sol` from `d420449fafeeb49b2ea50ade39cb8ceadcd810ea` |
+| 2 | Pending second QCAI run | Same Solidity file, audit setting and Diana deployment |
+
+The Stage 1 PDF identifies the Ethereum audit setting and the contract in its findings. The PDF export omits a source hash. The deployment verification above ties the designated input revision to the live controller.
+
+| Stage 1 finding | Disposition and verification |
+| --- | --- |
+| 1. **Critical** · Missing Access Control on Policy Change | Access is enforced by the existing post-quantum quorum. `rotatePolicy` calls `_verify(policyDigest(...), approvals)` before changing policy. That digest binds the proposed reviewer set, quorum, next sequence, deadline, current epoch and controller. Any relayer may submit the exact approved request. The regression `requires current policy approvals for the exact rotation even from a reviewer address` checks insufficient, wrong-purpose and changed-policy approvals and unchanged state after rejection. |
+| 2. **High** · Potential Overflow in Threshold Calculation | `_setPolicy` validates `1 <= quorum <= next.length <= 5` before assigning the supplied quorum. The assignment does no arithmetic on it. The regression `rejects out-of-range quorum and reviewer counts even with authentic rotation approvals` checks zero, a quorum above the reviewer count, the maximum unsigned integer and a six-member list. |
+| 3. **High** · Unchecked Return Values from External Calls | Both precompile calls check the success flag and return size before decoding. `_key` checks registration, algorithm, proof of possession and public-key length. `_verify` requires a decoded true value and compares the registered key with the pinned fingerprint. Invalid ABI data reverts during decoding. Existing regressions cover failed calls, a short verification response, a false verification result, missing proof and a changed registered key. The real precompiles are trusted chain components and were exercised by the live Diana walkthrough. |
+| 4. **Medium** · Potential Front-Running Vulnerability | The deadline is an expiry cutoff. The request requires the next sequence, and the signatures bind the entire action. A different relayer can submit only the same signed intent, with no sender benefit in the controller. The regression `lets a different relayer execute the exact signed intent only once` confirms the signed artifact and manifest are preserved and the duplicate is rejected. This design permits relayer competition and does not give a guarantee against censorship or ordering between separately authorized requests. |
+| 5. **Medium** · Unbounded Loop in Reviewer Validation | A policy allows at most five reviewers. `_verify` rejects approvals beyond that policy size before the loop, and each address must be strictly greater than the previous address. The tests `rejects approvals beyond the configured reviewer count`, `rejects duplicated reviewer signatures`, and the policy-bounds regression above cover the relevant limits. |
+| 6. **Low** · No ERC Compliance Indication | The controller is an application-specific release authorization contract. It implements no ERC token or interface standard and makes no ERC compliance claim. This is now documented in the README. |
+
+The response adds regression coverage and documentation while keeping the deployed Solidity byte-for-byte unchanged. An unchanged-source Stage 2 run can repeat findings, which should be read alongside these dispositions. [Organizer FAQ](https://build.qorechain.io/faq)

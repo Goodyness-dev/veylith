@@ -27,4 +27,45 @@ describe('ReleaseController authorization boundaries',function(){
  it('fails closed when key registry is unavailable',async()=>{const a=await approvals();await keys.configure(true,true,0);await assert.rejects(gate.authorize(r,a),/InvalidKey/);});
  it('revokes only the current artifact with fresh approvals',async()=>{await gate.authorize(r,await approvals());r={...r,sequence:2n,revoked:true};await gate.authorize(r,await approvals());assert.equal((await gate.getRelease()).revoked,true);});
  it('requires old quorum to rotate policy and invalidates existing release',async()=>{await gate.authorize(r,await approvals());const digest=await gate.policyDigest(reviewers,1,2,r.deadline);await gate.rotatePolicy(reviewers,1,2,r.deadline,await signatures(digest));assert.equal(await gate.policyEpoch(),2n);assert.equal((await gate.getRelease()).revoked,true);await assert.rejects(gate.authorize({...r,sequence:3n},await approvals()),/InvalidEpoch/);});
+
+ it('requires current policy approvals for the exact rotation even from a reviewer address',async()=>{
+  const currentReviewer=await ethers.getSigner(reviewers[0]);
+  const digest=await gate.policyDigest(reviewers,1,1,r.deadline);
+  const rotationApprovals=await signatures(digest);
+  await assert.rejects(gate.connect(currentReviewer).rotatePolicy(reviewers,1,1,r.deadline,[]),/InvalidSignature/);
+  await assert.rejects(gate.connect(relayer).rotatePolicy(reviewers,1,1,r.deadline,rotationApprovals.slice(0,1)),/InvalidSignature/);
+  await assert.rejects(gate.connect(relayer).rotatePolicy(reviewers,1,1,r.deadline,await approvals()),/InvalidSignature/);
+  await assert.rejects(gate.connect(relayer).rotatePolicy(reviewers,2,1,r.deadline,rotationApprovals),/InvalidSignature/);
+  assert.equal(await gate.policyEpoch(),1n);
+  assert.equal(await gate.threshold(),2n);
+  assert.equal(await gate.sequence(),0n);
+ });
+
+ it('rejects out-of-range quorum and reviewer counts even with authentic rotation approvals',async()=>{
+  const people=await ethers.getSigners();
+  const oversized=sorted(people.slice(0,6).map(person=>person.address));
+  for(const [next,quorum] of [[reviewers,0n],[reviewers,3n],[reviewers,ethers.MaxUint256],[oversized,2n]]){
+   const digest=await gate.policyDigest(next,quorum,1,r.deadline);
+   await assert.rejects(gate.rotatePolicy(next,quorum,1,r.deadline,await signatures(digest)),/InvalidPolicy/);
+  }
+  assert.equal(await gate.threshold(),2n);
+  assert.deepEqual(Array.from(await gate.getReviewers()),reviewers);
+ });
+
+ it('rejects approvals beyond the configured reviewer count',async()=>{
+  const a=await approvals();
+  await assert.rejects(gate.authorize(r,[...a,a[0]]),/InvalidSignature/);
+  assert.equal(await gate.sequence(),0n);
+ });
+
+ it('lets a different relayer execute the exact signed intent only once',async()=>{
+  const otherRelayer=(await ethers.getSigners())[5];
+  const a=await approvals();
+  await gate.connect(otherRelayer).authorize(r,a);
+  const applied=await gate.getRelease();
+  assert.equal(applied.artifactHash,r.artifactHash);
+  assert.equal(applied.manifestHash,r.manifestHash);
+  await assert.rejects(gate.connect(relayer).authorize(r,a),/InvalidSequence/);
+  assert.equal(await gate.sequence(),1n);
+ });
 });

@@ -6,7 +6,7 @@
 
 Veylith helps release engineers verify that the exact bytes their deployment agent received are still approved for its target environment. A Solidity controller on QoreChain Diana verifies approval from two distinct ML-DSA-87 reviewer keys. Each agent checks both fingerprints and current permission before installing.
 
-**Status.** Working Diana prototype in the Post-Quantum dApp category. One operator holds both keys in the solo demo. The required [two-stage QCAI audit](docs/AUDIT.md) is pending.
+**Status.** Working Diana prototype in the Post-Quantum dApp category. One operator holds both keys in the solo demo. The [QCAI audit record](docs/AUDIT.md) includes the Stage 1 report and a response to all six findings. Stage 2 is pending.
 
 Cosign verifies signatures over artifacts and can supply attestations for policy systems. Veylith demonstrates a deployment policy that combines a post-quantum quorum, environment binding, expiry, sequence and on-chain revocation. The restored file still matches its fingerprint after revocation, and the agent refuses to install because permission was withdrawn. [Cosign verification](https://docs.sigstore.dev/cosign/verifying/verify/)
 
@@ -23,7 +23,7 @@ Cosign verifies signatures over artifacts and can supply attestations for policy
 
 ## What is still unfinished
 
-The [two-stage QCAI audit](docs/AUDIT.md) and an exercise with independently held reviewer identities remain open. The workbench uses local signer identities. Hardhat uses mock precompiles. The live proof exercises Diana precompiles.
+The [second QCAI run](docs/AUDIT.md) and an exercise with independently held reviewer identities remain open. The workbench uses local signer identities. Hardhat uses mock precompiles. The live proof exercises Diana precompiles.
 
 ## Public testnet deployment
 
@@ -78,6 +78,8 @@ With a fresh `npm run demo` process running, `npm run proof:testnet` submits a D
 To exchange approval files with a reviewer on another machine, see the [reviewer workflow](docs/REVIEWERS.md).
 
 ## Architecture
+
+ReleaseController is an application-specific authorization contract. It implements no ERC token or interface standard.
 
 `contracts/ReleaseController.sol` is the authority boundary. `lib/chain.mjs` contains SDK/QoreSign/native-window integration. `agent/core.mjs` implements verification and atomic application. `agent/worker.mjs` runs each independent agent. `server.mjs` hosts demo artifacts, manages the processes and local signer actions. `src/` is the visual workbench. `evidence/` contains public results only.
 

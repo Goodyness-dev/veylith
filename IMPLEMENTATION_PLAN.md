@@ -1,12 +1,12 @@
 # Veylith submission implementation plan
 
-**Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The Vercel verifier serves those recorded results and reads live Diana state. The authorization and revocation receipts both resolved successfully on Diana. A live simulation rejected one approval and accepted two solo demo keys. The Stage 1 QCAI report is pending. The final submission closes **3 December at 00:59 WAT**. [Public verifier](https://veylith-gamma.vercel.app/) · [Official prize conditions](https://build.qorechain.io/prizes)
+**Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The Vercel verifier serves those recorded results and reads live Diana state. The authorization and revocation receipts both resolved successfully on Diana. A live simulation rejected one approval and accepted two solo demo keys. The Stage 1 QCAI report and all six dispositions are in the [audit record](docs/AUDIT.md). Stage 2 is ready to run. The final submission closes **3 December at 00:59 WAT**. [Public verifier](https://veylith-gamma.vercel.app/) · [Official prize conditions](https://build.qorechain.io/prizes)
 
 The public entry links to the updated verifier and the earlier demo video. Its description and kit selections still reflect the earlier version. Update the fields below from the signed-in builder dashboard. [Submitted project](https://build.qorechain.io/p/veylith)
 
 ## 1. Complete the required two-stage QCAI audit
 
-**Do this first.** The Post-Quantum dApp category requires a scoped EVM window, `pqcVerify`, the two-stage QCAI audit, and Foundry or Hardhat tests. Existing tests and live evidence support the other requirements. Both QCAI reports remain outstanding in the submission. [Prize conditions](https://build.qorechain.io/prizes)
+The Post-Quantum dApp category requires a scoped EVM window, `pqcVerify`, the two-stage QCAI audit, and Foundry or Hardhat tests. Existing tests and live evidence support the other requirements. Stage 1 and its response are available in the audit record. The remaining audit steps are the Stage 2 export and the project-page link. [Prize conditions](https://build.qorechain.io/prizes)
 
 1. Record the Solidity source, commit, compiler settings, Diana controller address and deployment transaction. Run Stage 1 on that source in the QCAI dashboard using its EVM/Solidity setting. Save the dated PDF in `docs/audit/`. Dashboard access may require the builder's signed-in session.
 2. Create `docs/AUDIT.md`. For each Stage 1 finding, record its severity, affected code, disposition and supporting evidence. Use a linked fix, a named regression test, or a concrete explanation of why a change is unnecessary. Explain where `pqcVerify` and `pqcKeyStatus` enforce policy and which tests exercise each boundary.
@@ -62,7 +62,7 @@ The public entry links to the updated verifier and the earlier demo video. Its d
 | 1 December | Open the submitted links from a fresh session and confirm the repo, audit, video, testnet addresses, and evidence match the final entry. |
 
 - [ ] Audit artifacts are public and linked from the README and the project page.
-- [x] A clean GitHub checkout built successfully and passed 29 tests. In a fresh signed-out browser, the public verifier showed all three outcomes and the live Diana state without a signer. A simulated RPC outage left the recorded outcomes readable on mobile.
+- [x] A clean GitHub checkout built successfully and passed the walkthrough revision's tests. In a fresh signed-out browser, the public verifier showed all three outcomes and the live Diana state without a signer. A simulated RPC outage left the recorded outcomes readable on mobile.
 - [x] The [standalone application walkthrough](evidence/orbit-walkthrough.json) records successful installation at sequence 20 and both refusals with matching evidence.
 - [x] The demo labels current Diana state and dated local observations. The submitted heartbeat and self-run walkthrough have separate evidence files.
 - [ ] Remove QoreSeal from the application dependency and submission kit claims if it remains unused. Keep its earlier research credited. The Solidity PQC features may remain Declared, as the organizer checks them manually. [Verification FAQ](https://build.qorechain.io/faq)
