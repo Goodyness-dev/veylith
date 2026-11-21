@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';import path from 'node:path';import {generateKeyPairSync,sign,createPrivateKey,createPublicKey} from 'node:crypto';
-import {applyRelease} from './core.mjs';import {authorization,localPath} from '../lib/chain.mjs';import {PROJECT,ENVIRONMENT,publicJson} from '../lib/core.mjs';
+import {applyRelease} from './core.mjs';import {authorization} from '../lib/chain.mjs';import {PROJECT,ENVIRONMENT,publicJson} from '../lib/core.mjs';import {agentDirectory} from '../lib/agent-state.mjs';
 const identity=process.env.VEYLITH_AGENT_ID;if(!['north','south'].includes(identity))throw new Error('Unknown agent');
-const directory=localPath(`agents/${identity}`);await fs.mkdir(directory,{recursive:true});
+const directory=agentDirectory(identity);await fs.mkdir(directory,{recursive:true});
 const keyPath=path.join(directory,'report-key.pem');let privateKey;
 try{privateKey=createPrivateKey(await fs.readFile(keyPath));}catch(e){if(e.code!=='ENOENT')throw e;const pair=generateKeyPairSync('ed25519');privateKey=pair.privateKey;await fs.writeFile(keyPath,privateKey.export({type:'pkcs8',format:'pem'}),{flag:'wx',mode:0o600});}
 const publicKey=createPublicKey(privateKey).export({type:'spki',format:'pem'});

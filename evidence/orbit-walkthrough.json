@@ -1,0 +1,219 @@
+{
+  "checkedAt": "2026-11-21T10:03:58.453Z",
+  "controller": "0x9700232112bda62e79f20ceb862ed5e6182b9872",
+  "reviewers": [
+    {
+      "name": "Release maintainer",
+      "native": "qor1p2nf2u4kpp2smxuuruqr959z3eeapmlkncxlkr",
+      "evm": "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6"
+    },
+    {
+      "name": "Security reviewer",
+      "native": "qor16ym4tg4wq837unfa3rlkwv2u29szduvjwlrnuq",
+      "evm": "0xd13755A2AE01e3Ee4D3d88ff67315c516026f192"
+    }
+  ],
+  "approved": {
+    "action": "authorized",
+    "hash": "0x977cf2d5fa2d4774c9b33f6965aeb2132822131ee3020293ae18f7c8df57293c",
+    "digest": "0x4c89a920d10ccf527e83f77873920d2a50ba521371902fe1b2fdf21efb9faeb8",
+    "sequence": "20",
+    "block": "10487104",
+    "relayer": {
+      "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+      "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+    },
+    "window": {
+      "blocks": 20,
+      "maxTxs": 1,
+      "maxValue": "492188"
+    },
+    "at": "2026-11-21T10:03:12.275Z"
+  },
+  "revoked": {
+    "action": "revoked",
+    "hash": "0xca1446969bd0a09dabd4fa2bfcd430b69f107699eae520a797bd6dc03879b5e1",
+    "digest": "0x827a2ee3a859017a1994a3f93034dbcd0f6e4a4ecac4e714b3a1f7795e22b5d0",
+    "sequence": "21",
+    "block": "10487136",
+    "relayer": {
+      "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+      "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+    },
+    "window": {
+      "blocks": 20,
+      "maxTxs": 1,
+      "maxValue": "492188"
+    },
+    "at": "2026-11-21T10:03:55.101Z"
+  },
+  "checks": [
+    {
+      "name": "Two reviewer keys authorize the release on Diana",
+      "pass": true
+    },
+    {
+      "name": "north agent applies the authorized item",
+      "pass": true
+    },
+    {
+      "name": "north installation report signature verifies",
+      "pass": true
+    },
+    {
+      "name": "south agent applies the authorized item",
+      "pass": true
+    },
+    {
+      "name": "south installation report signature verifies",
+      "pass": true
+    },
+    {
+      "name": "Standalone Orbit serves new catalog products",
+      "pass": true
+    },
+    {
+      "name": "Substituted artifact is refused with both fingerprints recorded",
+      "pass": true
+    },
+    {
+      "name": "Substituted download leaves the standalone catalog and installation unchanged",
+      "pass": true
+    },
+    {
+      "name": "The same sequence cannot install twice",
+      "pass": true
+    },
+    {
+      "name": "Original bytes still match after revocation and the agent refuses installation",
+      "pass": true
+    },
+    {
+      "name": "Revocation leaves the installed catalog unchanged",
+      "pass": true
+    },
+    {
+      "name": "Live Diana agrees with the revocation receipt",
+      "pass": true
+    }
+  ],
+  "applied": {
+    "north": {
+      "identity": "north",
+      "outcome": "applied",
+      "sequence": "20",
+      "artifactHash": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+      "manifestHash": "0x78fb16deb75fd7934304929c4a88586fe8683911e9baf2062fbfa5e8e5baf7ee",
+      "block": "10487111",
+      "config": {
+        "release": "1.1.0",
+        "banner": "The Night Market is open.",
+        "accent": "#91d8ba",
+        "catalog": "night-market"
+      },
+      "appliedAt": "2026-11-21T10:03:15.733Z",
+      "signature": "aOyP8gNwkfFjKETcISHs6GBNyIP87/D/Mz30Bj+zaFjZEbUwzyg5jmxyhQJmYPR9jhIwYPejMku4447B480YBg==",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAYxVPwcMtimKNJQdXxaw0dRqogie9bzju8eT6cSORRj4=\n-----END PUBLIC KEY-----\n",
+      "signatureAlgorithm": "Ed25519",
+      "note": "Signed agent report, not remote attestation"
+    },
+    "south": {
+      "identity": "south",
+      "outcome": "applied",
+      "sequence": "20",
+      "artifactHash": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+      "manifestHash": "0x78fb16deb75fd7934304929c4a88586fe8683911e9baf2062fbfa5e8e5baf7ee",
+      "block": "10487114",
+      "config": {
+        "release": "1.1.0",
+        "banner": "The Night Market is open.",
+        "accent": "#91d8ba",
+        "catalog": "night-market"
+      },
+      "appliedAt": "2026-11-21T10:03:19.172Z",
+      "signature": "E58NMHs8h88XzQC2e5YxwCzs5c3ZDKXlIL8ffS0gmO4UoIfsVZWvCpcY+v0dvCXrWbbfDNwZblfYs4GDjmMoDg==",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA8Qm1Zp8IAxe2Zrce32g7FA8wuun+1OOeCz9VC5twG6I=\n-----END PUBLIC KEY-----\n",
+      "signatureAlgorithm": "Ed25519",
+      "note": "Signed agent report, not remote attestation"
+    }
+  },
+  "mismatch": {
+    "identity": "north",
+    "outcome": "refused",
+    "reason": "Artifact hash mismatch",
+    "expected": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+    "observed": "0x7c81484e6f11562a3abecc72857e55454db43b8bf9e3b36ac1c7347bf97f3bb1",
+    "at": "2026-11-21T10:03:20.137Z"
+  },
+  "replay": {
+    "identity": "north",
+    "outcome": "refused",
+    "reason": "Sequence already applied",
+    "at": "2026-11-21T10:03:21.096Z"
+  },
+  "refusal": {
+    "identity": "south",
+    "outcome": "refused",
+    "reason": "Release revoked",
+    "at": "2026-11-21T10:03:56.918Z"
+  },
+  "restoredHash": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+  "service": {
+    "before": {
+      "store": "Orbit Commerce",
+      "agent": "north",
+      "sequence": "0",
+      "version": null,
+      "artifactHash": null,
+      "catalog": "essentials",
+      "title": "Everyday Essentials",
+      "products": [
+        "Canvas tote",
+        "Trail bottle",
+        "Field notebook"
+      ]
+    },
+    "afterInstall": {
+      "store": "Orbit Commerce",
+      "agent": "north",
+      "sequence": "20",
+      "version": "1.1.0",
+      "artifactHash": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+      "catalog": "night-market",
+      "title": "Night Market",
+      "products": [
+        "Neon travel pouch",
+        "Moonstone lantern",
+        "Midnight journal"
+      ]
+    },
+    "afterSubstitution": {
+      "store": "Orbit Commerce",
+      "agent": "north",
+      "sequence": "20",
+      "version": "1.1.0",
+      "artifactHash": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+      "catalog": "night-market",
+      "title": "Night Market",
+      "products": [
+        "Neon travel pouch",
+        "Moonstone lantern",
+        "Midnight journal"
+      ]
+    },
+    "afterRevocation": {
+      "store": "Orbit Commerce",
+      "agent": "north",
+      "sequence": "20",
+      "version": "1.1.0",
+      "artifactHash": "0xada2dc1334fd7165e21509adf53da377d7780aac1de1637a1da39f233a6ad92d",
+      "catalog": "night-market",
+      "title": "Night Market",
+      "products": [
+        "Neon travel pouch",
+        "Moonstone lantern",
+        "Midnight journal"
+      ]
+    }
+  }
+}

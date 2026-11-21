@@ -1,0 +1,33 @@
+.judge-evidence {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px clamp(18px, 4vw, 56px) 42px;
+}
+.judge-header, .judge-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.judge-header { border-bottom: 1px solid #ffffff25; padding-bottom: 16px; }
+.judge-intro { max-width: 670px; margin: 28px 0; }
+.judge-intro h1 { margin: 6px 0 10px; font-size: clamp(38px, 6vw, 78px); line-height: .98; }
+.judge-intro p, .judge-decision p, .judge-note { color: #c5d1c6; }
+.judge-evidence h2, .judge-evidence h3, .judge-evidence .eyebrow { margin: 0 0 8px; }
+.judge-evidence a { color: #a5e4c7; text-decoration: underline; text-underline-offset: 3px; }
+.judge-decisions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.judge-decision, .judge-live { padding: 16px; border: 1px solid #ffffff29; border-radius: 10px; background: #18231edb; }
+.judge-decision h3 { font-size: 19px; line-height: 1.17; }
+.judge-decision p { margin: 0 0 12px; font-size: 14px; }
+.judge-decision.accepted { border-top: 2px solid #99ddbc; }
+.judge-decision.held { border-top: 2px solid #edaa8f; }
+.judge-decision.held .eyebrow { color: #edaa8f; }
+.judge-catalog span { color: #99ddbc; }
+.judge-hashes { margin: 0; }
+.judge-hashes dt, .judge-live dt { font-size: 13px; color: #c5d1c6; }
+.judge-hashes dd, .judge-live dd { margin: 0 0 6px; font: 12px/1.35 monospace; overflow-wrap: anywhere; }
+.judge-note { font-size: 13px; margin: 12px 0 20px; }
+.judge-live { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.judge-live dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 0; max-width: 100%; }
+@media (max-width: 760px) { .judge-decisions { grid-template-columns: 1fr; } }

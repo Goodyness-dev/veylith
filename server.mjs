@@ -1,6 +1,7 @@
 import {relayRelease} from './lib/relay.mjs';
+import {join} from 'node:path';import {agentDirectory} from './lib/agent-state.mjs';
 import http from 'node:http';import fs from 'node:fs/promises';import {fileURLToPath} from 'node:url';import {fork} from 'node:child_process';import {randomUUID} from 'node:crypto';import {createServer as createViteServer} from 'vite';import {keccak256} from 'viem';
-import {client,contract,accounts,authorization,signatures,local,readJson} from './lib/chain.mjs';import {bundle,manifestFor,encodeManifest,publicJson} from './lib/core.mjs';
+import {client,contract,accounts,authorization,signatures,local,readJson} from './lib/chain.mjs';import {bundle,configuration,manifestFor,encodeManifest,publicJson} from './lib/core.mjs';
 const port=Number(process.env.PORT??5173);const vite=await createViteServer({server:{middlewareMode:true,fs:{strict:true,allow:[fileURLToPath(new URL('./',import.meta.url))],deny:['.env','.env.*','**/.git/**','**/.local/**','**/*.{crt,pem,key}']}},appType:'spa'});
 await fs.mkdir(local,{recursive:true});const manifest=encodeManifest(manifestFor());let tampered=false,busy=false,lastError=null;
 let proposal=null,progress={stage:'idle',message:'Ready for your review',reviewerCount:0};
@@ -30,8 +31,8 @@ await client.simulateContract({address:c.address,abi:c.abi,functionName:'authori
 const relayed=await relayRelease({controller:c,request,approvals,step});
 const {hash,receipt}=relayed;const item={action:revoked?'revoked':'authorized',hash,digest,sequence:String(request.sequence),block:String(receipt.blockNumber),relayer:relayed.relayer,window:relayed.bounds,at:new Date().toISOString()};transactions.push(item);await fs.writeFile(new URL('transactions.json',local),publicJson(transactions));proposal=null;step('confirmed',revoked?'Permission revoked on-chain':'Both approvals verified. App release authorized.',{block:String(receipt.blockNumber)});return item;}
 async function state(){let deployment,chain,error;try{deployment=await contract();chain=await authorization();}catch(e){error=e.shortMessage??e.message;}
-const applied={};for(const id of ['north','south'])try{applied[id]=await readJson(new URL(`agents/${id}/applied.json`,local));}catch(e){if(e.code!=='ENOENT')throw e;}
-return {mode:'Live Diana · local demo signers',presentationBaseline,ready:!!chain,chain,error,lastError,busy,tampered,artifactHash:keccak256(bundle),observedHash:keccak256(tampered?Buffer.from('{"release":"9.9.9","banner":"Substituted bytes","accent":"#ef6b5c"}\n'):bundle),manifest:manifestFor(),manifestHash:keccak256(manifest),contract:deployment?.address,reviewers:deployment?.reviewers,threshold:deployment?.threshold,reports,applied,transactions};}
+const applied={};for(const id of ['north','south'])try{applied[id]=await readJson(join(agentDirectory(id),'applied.json'));}catch(e){if(e.code!=='ENOENT')throw e;}
+return {mode:'Live Diana · local demo signers',presentationBaseline,ready:!!chain,chain,error,lastError,busy,tampered,configuration,orbitPort:process.env.VEYLITH_ORBIT_PORT,artifactHash:keccak256(bundle),observedHash:keccak256(tampered?Buffer.from('{"release":"9.9.9","banner":"Substituted bytes","accent":"#ef6b5c"}\n'):bundle),manifest:manifestFor(),manifestHash:keccak256(manifest),contract:deployment?.address,reviewers:deployment?.reviewers,threshold:deployment?.threshold,reports,applied,transactions};}
 const server=http.createServer(async(req,res)=>{
 const host=req.headers.host;const allowedHost=host===`127.0.0.1:${port}`||host===`localhost:${port}`;if(!allowedHost){res.writeHead(403);return res.end('Local host required');}
 const url=new URL(req.url,`http://${host}`);

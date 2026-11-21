@@ -4,9 +4,13 @@
 
 **First time here?** Start with [the plain-English explanation](#plain-english-explanation), then follow [the guided demonstration](#guided-demonstration-click-by-click). Developers can jump to [run locally](#run-locally), [architecture](#architecture), or [troubleshooting](#troubleshooting).
 
-Veylith is an exact-release authorization prototype for QoreChain's Build Before Q-Day fest. Two reviewers approve a fingerprint of an artifact and its manifest using ML-DSA-87. A Solidity controller verifies the approvals on Diana. Two independent local deployment-agent processes fetch the hosted bytes, check current chain authorization and apply only the approved configuration.
+Veylith helps release engineers verify that the exact bytes their deployment agent received are still approved for its target environment. A Solidity controller on QoreChain Diana verifies approval from two distinct ML-DSA-87 reviewer keys. Each agent checks both fingerprints and current permission before installing.
 
-**Status:** functional testnet/local prototype; unaudited. Category: Post-Quantum dApp. The visuals explain real operations, while the application and reviewer identities are intentionally small demo fixtures.
+**Status.** Working Diana prototype in the Post-Quantum dApp category. One operator holds both keys in the solo demo. The required [two-stage QCAI audit](docs/AUDIT.md) is pending.
+
+Cosign verifies signatures over artifacts and can supply attestations for policy systems. Veylith demonstrates a deployment policy that combines a post-quantum quorum, environment binding, expiry, sequence and on-chain revocation. The restored file still matches its fingerprint after revocation, and the agent refuses to install because permission was withdrawn. [Cosign verification](https://docs.sigstore.dev/cosign/verifying/verify/)
+
+[Open the public verifier](https://veylith-gamma.vercel.app/) · [Inspect the standalone Orbit walkthrough](evidence/orbit-walkthrough.json)
 
 ## What works
 
@@ -15,11 +19,11 @@ Veylith is an exact-release authorization prototype for QoreChain's Build Before
 - SDK hybrid native transactions open bounded EVM windows for the deployed target, then explicitly close them.
 - Two separate Node processes download a bounded JSON configuration and manifest from the local HTTP artifact host, verify authorization and bytes, persist anti-replay state and apply atomically.
 - An interactive React workbench shows actual local application state, agent refusals and public transaction evidence. Agent success reports use Ed25519 signatures; these are not PQ receipts or remote attestation.
-- 13 Hardhat contract tests and 10 agent tests pass. The live end-to-end walkthrough passed 9 checks; see [public evidence](evidence/live-flow.json).
+- Standalone Orbit Commerce serves the catalog selected by North's verified installation. The [live walkthrough](evidence/orbit-walkthrough.json) recorded 12 passing checks, including the catalog switch and both refusals. The [earlier agent walkthrough](evidence/live-flow.json) remains available.
 
 ## What is still unfinished
 
-QoreX browser-based arbitrary-message PQ signing; authenticated QoreSeal reviewer packets in the application; confirmation of the public hosted deployment; the event-required two-stage QCAI audit; independent review of security claims; final cover/video and project-page completion. The installed QoreSeal package is not evidence of completed app integration. Contract tests use mock precompiles locally; the live proof separately exercises real Diana precompiles.
+The [two-stage QCAI audit](docs/AUDIT.md) and an exercise with independently held reviewer identities remain open. The workbench uses local signer identities. Hardhat uses mock precompiles. The live proof exercises Diana precompiles.
 
 ## Public testnet deployment
 
@@ -53,13 +57,13 @@ npm test
 npm run build
 ```
 
-The application runs with:
+Launch the workbench and standalone Orbit service together.
 
 ```sh
-npm run dev
+npm run demo
 ```
 
-Open `http://127.0.0.1:5173`. Without local test identities/deployment state, the UI holds deployments and reports that live setup is unavailable. The public repository contains no signing secrets.
+Open the [workbench](http://127.0.0.1:5173) and [Orbit storefront](http://127.0.0.1:5180/). Orbit starts at sequence 0 with Everyday Essentials. Authorize and deploy through North, then refresh the storefront to see Night Market products and the installed sequence. Substitute the hosted bytes or revoke permission, then try deploying again. Orbit keeps serving the installed collection. Its read-only `/catalog` and `/release` endpoints expose the catalog, installed sequence and artifact fingerprint.
 
 ### Testnet identities and deployment
 
@@ -69,7 +73,9 @@ For a standalone clone, generate two disposable funded Diana identities on your 
 
 The server binds to loopback, restricts write requests to same-origin JSON and denies HTTP access to local signing files. Do not expose this signer server through a public tunnel. A public demo needs an independent wallet/signing design.
 
-With the local server running, `npm run proof:testnet` submits testnet authorization and revocation transactions and runs both agents. It overwrites the public walkthrough evidence with the new result. Do not use a pre-drill proof as the transaction required during the actual drill window.
+With a fresh `npm run demo` process running, `npm run proof:testnet` submits a Diana authorization and revocation, exercises both agents and records the standalone catalog throughout. A passing run updates `evidence/orbit-walkthrough.json`. Each `npm run demo` launch starts with new, isolated agent state. `npm run dev` keeps the workbench-only mode with persistent agent state. The proof updates the shared testnet controller, so run it separately from a manual demo.
+
+To exchange approval files with a reviewer on another machine, see the [reviewer workflow](docs/REVIEWERS.md).
 
 ## Architecture
 
@@ -279,9 +285,10 @@ Click the hangar. The release viewer shows the bounded configuration and its man
 
 ```json
 {
-  "release": "1.0.0",
-  "banner": "The release you approved.",
-  "accent": "#91d8ba"
+  "release": "1.1.0",
+  "banner": "The Night Market is open.",
+  "accent": "#91d8ba",
+  "catalog": "night-market"
 }
 ```
 
@@ -353,7 +360,7 @@ North independently:
 
 Expected result: **Verified configuration installed**, with the new applied sequence and observed block in North's preview area.
 
-North might already look installed from an earlier rehearsal. Saved agent state survives restarts. If its previous configuration was also version 1.0.0, the banner may not change. **Use the new sequence and agent result to confirm a fresh operation.**
+With `npm run dev`, North can retain an earlier installation across restarts. Use the new sequence and agent result to confirm a fresh operation. With `npm run demo`, the service starts at its default catalog.
 
 ### 10. Deliver to South
 
@@ -454,7 +461,7 @@ After capture permission, the recorder drives real local/testnet operations: ins
 
 The recorder adds captions and produces no audio. Long network waits are paused after several seconds and resumed on completion; a visible label discloses shortened waits. This is not a continuous wall-clock recording or an estimate of performance. MP4 is selected if supported by the browser; otherwise the download is WebM, which can be imported into a video editor and exported as MP4 with narration. The take ends revoked and includes downloadable operation results. Always review the entire saved video and its duration before submitting. Browser capture and final recording output require operator verification; a passing source build does not establish a completed video.
 
-**For your video, use the local workbench.** The Vercel version was prepared as a public verifier; its signing and deployment controls are disabled. Public deployment itself hasn't been confirmed.
+**For your video, use the local workbench.** Launch it with `npm run demo` and open Orbit in a separate tab to show the catalog change. The Vercel public verifier shows the recorded results and current Diana state.
 
 | Approximate time | Screen action | Suggested narration |
 |---|---|---|
@@ -498,7 +505,7 @@ Stop a manually launched server with **Ctrl+C** in its terminal. Restarting rese
 | `npm test` | Runs 13 contract checks, 10 agent checks, three public-verifier checks and two relay-policy checks; does not submit testnet writes. |
 | `npm run build` | Builds the frontend into `dist`; does not deploy a contract or start agents. |
 | `npm run setup:testnet` | Prepares/reuses local disposable identities, registers keys and deploys/reuses a controller. Uses test funds. |
-| `npm run proof:testnet` | Requires local server; executes nine live walkthrough checks, submits transactions and ends revoked. Updates the public evidence file. |
+| `npm run proof:testnet` | Requires a fresh `npm run demo` launch. Executes 12 live walkthrough checks, records the standalone catalog and ends with permission revoked. |
 | `node scripts/check-secrets.mjs` | Checks staged files against known local signing secrets and key-file markers. |
 
 | Path | Purpose / publication status |
