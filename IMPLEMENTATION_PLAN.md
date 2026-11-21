@@ -1,12 +1,12 @@
 # Veylith submission implementation plan
 
-**Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The Vercel verifier serves those recorded results and reads live Diana state. The authorization and revocation receipts both resolved successfully on Diana. A live simulation rejected one approval and accepted two solo demo keys. The Stage 1 QCAI report and all six dispositions are in the [audit record](docs/AUDIT.md). Stage 2 is ready to run. The final submission closes **3 December at 00:59 WAT**. [Public verifier](https://veylith-gamma.vercel.app/) · [Official prize conditions](https://build.qorechain.io/prizes)
+**Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The Vercel verifier serves those recorded results and reads live Diana state. The authorization and revocation receipts both resolved successfully on Diana. A live simulation rejected one approval and accepted two solo demo keys. Both QCAI reports and our responses are in the [audit record](docs/AUDIT.md). The final submission closes **3 December at 00:59 WAT**. [Public verifier](https://veylith-gamma.vercel.app/) · [Official prize conditions](https://build.qorechain.io/prizes)
 
 The public entry links to the updated verifier and the earlier demo video. Its description and kit selections still reflect the earlier version. Update the fields below from the signed-in builder dashboard. [Submitted project](https://build.qorechain.io/p/veylith)
 
 ## 1. Complete the required two-stage QCAI audit
 
-The Post-Quantum dApp category requires a scoped EVM window, `pqcVerify`, the two-stage QCAI audit, and Foundry or Hardhat tests. Existing tests and live evidence support the other requirements. Stage 1 and its response are available in the audit record. The remaining audit steps are the Stage 2 export and the project-page link. [Prize conditions](https://build.qorechain.io/prizes)
+The Post-Quantum dApp category requires a scoped EVM window, `pqcVerify`, the two-stage QCAI audit, and Foundry or Hardhat tests. Existing tests and live evidence support the other requirements. Both audit exports and responses are available in the audit record. The remaining audit submission step is the project-page link. [Prize conditions](https://build.qorechain.io/prizes)
 
 1. Record the Solidity source, commit, compiler settings, Diana controller address and deployment transaction. Run Stage 1 on that source in the QCAI dashboard using its EVM/Solidity setting. Save the dated PDF in `docs/audit/`. Dashboard access may require the builder's signed-in session.
 2. Create `docs/AUDIT.md`. For each Stage 1 finding, record its severity, affected code, disposition and supporting evidence. Use a linked fix, a named regression test, or a concrete explanation of why a change is unnecessary. Explain where `pqcVerify` and `pqcKeyStatus` enforce policy and which tests exercise each boundary.
@@ -82,7 +82,7 @@ The standalone Orbit Commerce storefront switched from Everyday Essentials to Ni
 
 The Solidity controller checks ML-DSA-87 signatures and registered keys using `pqcVerify` and `pqcKeyStatus`. Approvals bind the chain, controller, project, environment, artifact and manifest fingerprints, expiry, sequence and policy epoch. A separate relayer submits through a short, target-scoped EVM window opened with hybrid signing. Two Node agents verify and install bounded JSON configuration, and the standalone Orbit HTTP service reads North's installed release. One demo operator controls both distinct reviewer keys. The approval-file workflow also supports reviewing and signing on separate devices.
 
-Hardhat tests exercise the contract boundaries, and the 12-check walkthrough exercises the Diana precompiles and the standalone storefront. For source, compiler settings and QCAI report status, see [the audit record](https://github.com/Goodyness-dev/veylith/blob/main/docs/AUDIT.md). For receipts and the public evidence download, see [the verifier](https://veylith-gamma.vercel.app/).
+Hardhat tests exercise the contract boundaries, and the 12-check walkthrough exercises the Diana precompiles and the standalone storefront. Both QCAI reports, our finding-by-finding response, and the deployed source are in [the audit record](https://github.com/Goodyness-dev/veylith/blob/main/docs/AUDIT.md). The [verifier](https://veylith-gamma.vercel.app/) shows the receipts and public evidence download.
 
 ### Kit selection
 

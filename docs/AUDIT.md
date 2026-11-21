@@ -1,6 +1,6 @@
 # ReleaseController audit record
 
-**QCAI status.** Stage 1 was exported on 21 November 2026. The report scored the contract 65/100, rated it High, and listed six findings. Each finding has a disposition below. Stage 2 is ready to run in the same EVM/Solidity setting.
+**QCAI status.** Both runs were exported on 21 November 2026 in the Ethereum EVM/Solidity setting. Each scored the contract 65/100, rated it High, and listed six findings. The Stage 1 dispositions and Stage 2 follow-up are below.
 
 ## Deployment and audit input
 
@@ -26,9 +26,9 @@ Hardhat uses local precompile doubles. The [Diana walkthrough](../evidence/live-
 | Stage | Report | Source |
 | --- | --- | --- |
 | 1 | [21 November 2026, original QCAI export](audit/2026-11-21-stage-1-qcai.pdf) | `ReleaseController.sol` from `d420449fafeeb49b2ea50ade39cb8ceadcd810ea` |
-| 2 | Pending second QCAI run | Same Solidity file, audit setting and Diana deployment |
+| 2 | [21 November 2026, original QCAI export](audit/2026-11-21-stage-2-qcai.pdf) | Same Solidity file, audit setting and Diana deployment |
 
-The Stage 1 PDF identifies the Ethereum audit setting and the contract in its findings. The PDF export omits a source hash. The deployment verification above ties the designated input revision to the live controller.
+Both PDFs identify the Ethereum audit setting and the contract through their findings. The exports omit the source hash. The deployment verification above ties the designated input revision to the live controller.
 
 | Stage 1 finding | Disposition and verification |
 | --- | --- |
@@ -39,4 +39,17 @@ The Stage 1 PDF identifies the Ethereum audit setting and the contract in its fi
 | 5. **Medium** · Unbounded Loop in Reviewer Validation | A policy allows at most five reviewers. `_verify` rejects approvals beyond that policy size before the loop, and each address must be strictly greater than the previous address. The tests `rejects approvals beyond the configured reviewer count`, `rejects duplicated reviewer signatures`, and the policy-bounds regression above cover the relevant limits. |
 | 6. **Low** · No ERC Compliance Indication | The controller is an application-specific release authorization contract. It implements no ERC token or interface standard and makes no ERC compliance claim. This is now documented in the README. |
 
-The response adds regression coverage and documentation while keeping the deployed Solidity byte-for-byte unchanged. An unchanged-source Stage 2 run can repeat findings, which should be read alongside these dispositions. [Organizer FAQ](https://build.qorechain.io/faq)
+## Stage 2 follow-up
+
+The response added regression coverage and documentation while keeping the deployed Solidity byte-for-byte unchanged. Stage 2 retained the same severity distribution and overall score. It reframed two findings, addressed here. [Organizer FAQ](https://build.qorechain.io/faq)
+
+| Stage 2 finding | Follow-up |
+| --- | --- |
+| Critical · Missing Access Control on Policy Change | Stage 1 finding 1 applies. The existing reviewer quorum authorizes rotation. Tests cover rejection with missing or changed approvals. |
+| High · Potential Overflow in Sequence Management | This run flags the sequence counter where Stage 1 flagged the threshold. Solidity 0.8.30 checks `sequence + 1` and `policyEpoch++`. Neither expression is in an `unchecked` block, so overflow reverts. The next sequence must be exactly one greater than current state. Reaching the maximum would prevent further increments. |
+| High · Unchecked Delegatecall Results | The flagged paths use `staticcall` to the two fixed Diana precompile addresses. Stage 1 finding 3 describes the return checks and failure-path tests. There is no `delegatecall` in ReleaseController. |
+| Medium · Potential Front-Running Vulnerability | Stage 1 finding 4 applies. Submitting the same signed intent from another account cannot change its contents or execute it twice. The documented ordering and censorship limits still apply. |
+| Medium · Unbounded Loop in Reviewer Validation | Stage 1 finding 5 applies. Policy size and approvals per transaction are both bounded by the controller. |
+| Low · Missing ERC Standards Compliance | Stage 1 finding 6 applies. ReleaseController implements a project-specific authorization protocol and claims no ERC compliance. |
+
+The QCAI High rating remains in both original reports. These exports record the organizer's automated review.

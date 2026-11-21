@@ -6,7 +6,7 @@
 
 Veylith helps release engineers verify that the exact bytes their deployment agent received are still approved for its target environment. A Solidity controller on QoreChain Diana verifies approval from two distinct ML-DSA-87 reviewer keys. Each agent checks both fingerprints and current permission before installing.
 
-**Status.** Working Diana prototype in the Post-Quantum dApp category. One operator holds both keys in the solo demo. The [QCAI audit record](docs/AUDIT.md) includes the Stage 1 report and a response to all six findings. Stage 2 is pending.
+**Status.** Working Diana prototype in the Post-Quantum dApp category. One operator holds both keys in the solo demo. The [QCAI audit record](docs/AUDIT.md) includes both reports and the response to their findings.
 
 Cosign verifies signatures over artifacts and can supply attestations for policy systems. Veylith demonstrates a deployment policy that combines a post-quantum quorum, environment binding, expiry, sequence and on-chain revocation. The restored file still matches its fingerprint after revocation, and the agent refuses to install because permission was withdrawn. [Cosign verification](https://docs.sigstore.dev/cosign/verifying/verify/)
 
@@ -23,7 +23,7 @@ Cosign verifies signatures over artifacts and can supply attestations for policy
 
 ## What is still unfinished
 
-The [second QCAI run](docs/AUDIT.md) and an exercise with independently held reviewer identities remain open. The workbench uses local signer identities. Hardhat uses mock precompiles. The live proof exercises Diana precompiles.
+An exercise with independently held reviewer identities remains open. The workbench uses local signer identities. Hardhat uses mock precompiles. The live proof exercises Diana precompiles.
 
 ## Public testnet deployment
 
@@ -212,7 +212,8 @@ sequenceDiagram
 | Public verifier | Read-only current-chain view with separately dated recorded test evidence; it has no connected local signers or agents. |
 | QoreSeal in the UI | Unfinished; installing a dependency does not mean the feature works. |
 | Browser-wallet approval | Unfinished; the local demo signs using local disposable key material. |
-| Security audit / official drill survival | Not established by our own passing tests. |
+| Security review | Both organizer QCAI runs and our responses are in the [audit record](docs/AUDIT.md). |
+| Official drill survival | Awaiting organizer confirmation. |
 
 ## Guided demonstration: click by click
 
