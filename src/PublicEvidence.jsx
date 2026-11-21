@@ -16,7 +16,10 @@ export default function PublicEvidence({ data }) {
   return <main className="judge-evidence">
     <header className="judge-header">
       <a className="wordmark" href="/">VEY<span>L</span>ITH<span className="symbol">✳</span></a>
-      <a href="https://github.com/Goodyness-dev/veylith">Source ↗</a>
+      <nav className="judge-header-links" aria-label="Project resources">
+        <a href="https://github.com/Goodyness-dev/veylith/blob/main/docs/AUDIT.md">QCAI audit ↗</a>
+        <a href="https://github.com/Goodyness-dev/veylith">Source ↗</a>
+      </nav>
     </header>
     <section className="judge-intro">
       <p className="eyebrow">RELEASE AUTHORIZATION · DIANA TESTNET</p>

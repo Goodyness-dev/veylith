@@ -11,6 +11,7 @@
   flex-wrap: wrap;
 }
 .judge-header { border-bottom: 1px solid #ffffff25; padding-bottom: 16px; }
+.judge-header-links { display: flex; flex-wrap: wrap; gap: 16px; }
 .judge-intro { max-width: 670px; margin: 28px 0; }
 .judge-intro h1 { margin: 6px 0 10px; font-size: clamp(38px, 6vw, 78px); line-height: .98; }
 .judge-intro p, .judge-decision p, .judge-note { color: #c5d1c6; }

@@ -2,6 +2,8 @@
 
 **QCAI status.** Both runs were exported on 21 November 2026 in the Ethereum EVM/Solidity setting. Each scored the contract 65/100, rated it High, and listed six findings. The Stage 1 dispositions and Stage 2 follow-up are below.
 
+**Critical finding checked on Diana.** At block `10493964`, the deployed controller required two approvals for policy rotation. An unrelated relayer simulated the same proposed policy at the next sequence. Zero and one valid approvals each reverted with `InvalidSignature`. Two distinct ML-DSA-87 approvals succeeded in simulation. Both keys were held by the solo demo operator. The calls were pinned to the same block and no transaction was broadcast.
+
 ## Deployment and audit input
 
 - Contract [ReleaseController.sol](../contracts/ReleaseController.sol) at commit `d420449fafeeb49b2ea50ade39cb8ceadcd810ea`. The Solidity source last changed at `e02f1d4` before that commit.
