@@ -8,6 +8,7 @@
 - Compiler Solidity 0.8.30, optimizer enabled with 200 runs, EVM target Paris. See [the Hardhat configuration](../hardhat.config.cjs).
 - Controller `0x9700232112bda62e79f20ceb862ed5e6182b9872` on Diana (chain ID `9800`). [Deployment transaction](https://dashboard.qorechain.io/explorer/tx/0xf1afd44694f743c2e87db1efcb42fe23c7e4bf292eeaed6eea0b00bcfc5d26e0)
 - Deployment record stores the UTF-8 source's Keccak-256 hash `0xeb3f8be6a276c7849dc5d21056886e9d9661c60a340e07abd9d8325482480113`. The setup script checks this value before reusing a deployment. [Setup script](../scripts/setup-testnet.mjs)
+- On 21 November 2026, the current source matched the recorded hash. The locally compiled creation bytecode plus the ABI-encoded constructor arguments matched the full successful Diana deployment transaction input at block `10189663`. The walkthrough's authorization and revocation receipts also emitted the recorded digest, sequence, artifact fingerprint and revocation flag.
 - Audit setting **Ethereum (EVM/Solidity)** for both stages. QCAI currently reports EVM quantum readiness as “Not scored”. [Organizer FAQ](https://build.qorechain.io/faq)
 
 ## PQC design and tests

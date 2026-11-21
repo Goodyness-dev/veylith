@@ -1,8 +1,8 @@
 # Veylith submission implementation plan
 
-**Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The public evidence view, product explanation and approval file exchange are implemented. A live simulation rejected one approval and accepted two solo demo keys. The Stage 1 QCAI report is pending. The final submission closes **3 December at 00:59 WAT**. [Official prize conditions](https://build.qorechain.io/prizes)
+**Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The Vercel verifier serves those recorded results and reads live Diana state. The authorization and revocation receipts both resolved successfully on Diana. A live simulation rejected one approval and accepted two solo demo keys. The Stage 1 QCAI report is pending. The final submission closes **3 December at 00:59 WAT**. [Public verifier](https://veylith-gamma.vercel.app/) · [Official prize conditions](https://build.qorechain.io/prizes)
 
-The submitted Vercel verifier returned live Diana state during the review. Both the demo and video are linked on the public entry. The remaining gaps are audit evidence, an independently running application, a clear product distinction, readable public proof, and a precise account of who holds the reviewer keys. [Submitted project](https://build.qorechain.io/p/veylith)
+The public entry links to the updated verifier and the earlier demo video. Its description and kit selections still reflect the earlier version. Update the fields below from the signed-in builder dashboard. [Submitted project](https://build.qorechain.io/p/veylith)
 
 ## 1. Complete the required two-stage QCAI audit
 
@@ -62,10 +62,32 @@ The submitted Vercel verifier returned live Diana state during the review. Both 
 | 1 December | Open the submitted links from a fresh session and confirm the repo, audit, video, testnet addresses, and evidence match the final entry. |
 
 - [ ] Audit artifacts are public and linked from the README and the project page.
-- [ ] A clean checkout can build and run the documented tests. The public verifier works without a signer.
+- [x] A clean GitHub checkout built successfully and passed 29 tests. In a fresh signed-out browser, the public verifier showed all three outcomes and the live Diana state without a signer. A simulated RPC outage left the recorded outcomes readable on mobile.
 - [x] The [standalone application walkthrough](evidence/orbit-walkthrough.json) records successful installation at sequence 20 and both refusals with matching evidence.
 - [x] The demo labels current Diana state and dated local observations. The submitted heartbeat and self-run walkthrough have separate evidence files.
 - [ ] Remove QoreSeal from the application dependency and submission kit claims if it remains unused. Keep its earlier research credited. The Solidity PQC features may remain Declared, as the organizer checks them manually. [Verification FAQ](https://build.qorechain.io/faq)
 - [ ] Check the final recording is within three minutes and the entry points to the final public proof. [Prize conditions](https://build.qorechain.io/prizes)
 
 If time runs short, finish the official audit and one real application walkthrough first, then publish the evidence. Accurate two-key demo wording is acceptable for the current prototype. Keep separate-custody claims tied to an actual run.
+
+## Copy for the project page
+
+### About
+
+Veylith helps release engineers verify that the exact software bytes an agent received are still approved for the target environment. On Diana, two registered post-quantum reviewer keys authorize a specific artifact and manifest. The deployment agents check the fingerprints and current authorization before applying the release.
+
+The standalone Orbit Commerce storefront switched from Everyday Essentials to Night Market when its agent installed the approved release. The agent refused substituted bytes and refused the restored original after on-chain revocation. Orbit kept serving its installed catalog in both cases. The public demo shows both fingerprints, the Diana receipts and the recorded storefront results.
+
+### How it's made
+
+The Solidity controller checks ML-DSA-87 signatures and registered keys using `pqcVerify` and `pqcKeyStatus`. Approvals bind the chain, controller, project, environment, artifact and manifest fingerprints, expiry, sequence and policy epoch. A separate relayer submits through a short, target-scoped EVM window opened with hybrid signing. Two Node agents verify and install bounded JSON configuration, and the standalone Orbit HTTP service reads North's installed release. One demo operator controls both distinct reviewer keys. The approval-file workflow also supports reviewing and signing on separate devices.
+
+Hardhat tests exercise the contract boundaries, and the 12-check walkthrough exercises the Diana precompiles and the standalone storefront. For source, compiler settings and QCAI report status, see [the audit record](https://github.com/Goodyness-dev/veylith/blob/main/docs/AUDIT.md). For receipts and the public evidence download, see [the verifier](https://veylith-gamma.vercel.app/).
+
+### Kit selection
+
+Keep QoreChain SDK and QoreSign. Clear QoreSeal, which was evaluated during research and has been removed from the application's dependencies.
+
+### Refreshed video
+
+Open on the Orbit storefront at sequence 0. Show the release details and approval in the workbench, then install through North and refresh Orbit to show the new products and sequence. Show the refusal when the download changes. Restore the exact original, revoke permission and show South refuse it. Close on the public verifier so judges can independently revisit the receipts and both fingerprints. Retain the existing video link until a replacement under three minutes is uploaded and playable from a signed-out session.
