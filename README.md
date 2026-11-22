@@ -10,7 +10,54 @@ Veylith helps release engineers verify that the exact bytes their deployment age
 
 Cosign verifies signatures over artifacts and can supply attestations for policy systems. Veylith demonstrates a deployment policy that combines a post-quantum quorum, environment binding, expiry, sequence and on-chain revocation. The restored file still matches its fingerprint after revocation, and the agent refuses to install because permission was withdrawn. [Cosign verification](https://docs.sigstore.dev/cosign/verifying/verify/)
 
-[Open the public verifier](https://veylith-gamma.vercel.app/) · [Inspect the standalone Orbit walkthrough](evidence/orbit-walkthrough.json)
+[Open the public verifier](https://veylith-gamma.vercel.app/) · [See the release we tested](#the-release-we-tested) · [How QoreChain makes this possible](#how-qorechain-makes-this-possible) · [Read the audit record](docs/AUDIT.md)
+
+[![Public verifier showing the approved installation, the mismatched fingerprints, the revocation refusal, and links to both Diana receipts](docs/media/public-verifier.png)](https://veylith-gamma.vercel.app/)
+
+## The release we tested
+
+Orbit Commerce is a standalone Node HTTP storefront. It reads North's applied release file and serves the selected products through its own page and `/catalog` endpoint. The installed configuration selects a catalog via bounded JSON. The storefront starts at sequence 0 with Everyday Essentials. A verified installation at sequence 20 switches it to Night Market. The screenshots below show those two states in the standalone service.
+
+![Standalone Orbit Commerce before and after installation, from Everyday Essentials at sequence 0 to Night Market at sequence 20](docs/media/orbit-before-after.png)
+
+| Step in the recorded Diana run | Decision | Standalone Orbit result |
+|---|---|---|
+| Authorize sequence 20 and deploy the original bundle | Both agents verified and applied it. [Authorization receipt](https://dashboard.qorechain.io/explorer/tx/0x977cf2d5fa2d4774c9b33f6965aeb2132822131ee3020293ae18f7c8df57293c) | North's installed state switched the catalog to Night Market. |
+| Serve different bytes from the same artifact endpoint | North reported `Artifact hash mismatch` and recorded both fingerprints. | Night Market, sequence 20. |
+| Restore the original and retry | North reported `Sequence already applied`. | Night Market, sequence 20. |
+| Revoke at sequence 21 and request delivery again | South reported `Release revoked`. The restored download still matched the approved fingerprint. [Revocation receipt](https://dashboard.qorechain.io/explorer/tx/0xca1446969bd0a09dabd4fa2bfcd430b69f107699eae520a797bd6dc03879b5e1) | Night Market, sequence 20. |
+
+The two receipts record on-chain decisions. The refusals, agent reports and storefront responses are observations from the same local run. The verifier shows them beside a separate live chain read. Select **Testnet** in the QoreChain Dashboard when opening the receipts. [Full walkthrough evidence](evidence/orbit-walkthrough.json) · [QoreChain explorer guide](https://docs.qorechain.io/dashboard/explorer/)
+
+## How QoreChain makes this possible
+
+Veylith uses Diana for both **who can approve a release** and **whether approval is still valid when the agent installs it**. The first decision uses QoreChain's post-quantum contract primitives. The second uses shared, queryable contract state.
+
+| QoreChain feature | What Veylith does with it | What that enables |
+|---|---|---|
+| **Registered keys and proof of possession** | The reviewer identities register ML-DSA-87 public keys. The controller queries `pqcKeyStatus` at `0x0A02` and requires the registered algorithm and possession proof. It pins each authorized key's fingerprint to the policy and rechecks it when verifying an approval. | The controller checks signatures against the keys tied to the reviewer policy. [Controller](contracts/ReleaseController.sol) |
+| **ML-DSA-87 verification in Solidity** | QoreSign signs the controller's digest using the Diana message domain. The controller calls `pqcVerify` at `0x0A01` for each approval and requires the quorum of distinct reviewer addresses. | A relayer can carry a signed request, while the contract verifies the release decision against the reviewers' registered post-quantum keys. [Signing code](lib/chain.mjs) · [Controller](contracts/ReleaseController.sol) |
+| **Hybrid native signing and scoped EVM windows** | A dedicated relayer opens its own window with a hybrid-signed native transaction. The application scopes the window to the controller, one transaction, up to 20 blocks and a gas-based value cap. The relayer then submits the EVM transaction and closes the window. | QoreChain limits admission of the EVM transaction. The release controller independently checks the reviewer's authorization quorum. [Relayer](lib/relay.mjs) · [QoreChain EVM guide](https://docs.qorechain.io/developer-guide/evm-development/) |
+| **Shared EVM state and receipts** | The controller stores the current release authorization and emits an event on authorization and revocation. Agents read the authorization before verifying the download and recheck it immediately before the local write. | Agents and public observers can inspect the same authorization record. Revocation changes what can be installed next, and the public verifier can link to the confirmed state changes. [Agent](agent/core.mjs) · [Public state reader](lib/public-state.mjs) |
+
+The signed digest binds the EVM chain ID, controller address, native-chain domain, project and target environment to the exact artifact and manifest fingerprints. It also binds the sequence, expiry, policy epoch and revocation flag. A reviewer signs a specific operation for a specific controller and environment, and the controller requires the next sequence. Policy rotation requires approval from the existing policy and invalidates previously authorized releases. [Controller](contracts/ReleaseController.sol)
+
+QoreChain stores fingerprints and authorization state. The artifact host serves the file, and the agents verify its exact bytes, schema, release target and local replay state before writing the installed configuration. Orbit serves the result of that write. This is what makes the revocation example useful to a release engineer. The exact same file can still verify against its fingerprint after permission to install it has been withdrawn. [Agent](agent/core.mjs) · [Standalone Orbit service](orbit/server.mjs)
+
+### One run from authorization to revocation
+
+```mermaid
+flowchart TD
+    A["Diana authorizes sequence 20"] --> B["Agents verify and apply original bytes"]
+    B --> O["Orbit serves Night Market at sequence 20"]
+    O --> C["Different bytes at the same URL"]
+    C --> D["North refuses: artifact hash mismatch"]
+    D --> E["Original bytes restored"]
+    E --> F["North refuses: sequence already applied"]
+    F --> G["Diana revokes at sequence 21"]
+    G --> H["South refuses: release revoked"]
+    H --> I["Orbit still serves Night Market at sequence 20"]
+```
 
 ## What works
 
@@ -36,8 +83,8 @@ Network: `qorechain-diana` (EVM chain ID 9800).
 | Maintainer EVM twin | `0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6` |
 | Security-reviewer native address | `qor16ym4tg4wq837unfa3rlkwv2u29szduvjwlrnuq` |
 | Deploy transaction | `0xf1afd44694f743c2e87db1efcb42fe23c7e4bf292eeaed6eea0b00bcfc5d26e0` |
-| Proven release authorization | `0x7135333fce5bb89f066ecd6bd1c3af04bc6f523bb4ec766ff0d6c3ba9cccc434` |
-| Proven revocation | `0xe3c6a5bdc92da3b0c20d1c0d35ec6951f850c62a18e543d63af8e9f50020e512` |
+| Orbit walkthrough authorization, sequence 20 | `0x977cf2d5fa2d4774c9b33f6965aeb2132822131ee3020293ae18f7c8df57293c` |
+| Orbit walkthrough revocation, sequence 21 | `0xca1446969bd0a09dabd4fa2bfcd430b69f107699eae520a797bd6dc03879b5e1` |
 
 The proof ends with the release revoked. Already applied demo configurations remain applied. This is expected behavior, not rollback.
 
@@ -81,7 +128,7 @@ To exchange approval files with a reviewer on another machine, see the [reviewer
 
 ReleaseController is an application-specific authorization contract. It implements no ERC token or interface standard.
 
-`contracts/ReleaseController.sol` is the authority boundary. `lib/chain.mjs` contains SDK/QoreSign/native-window integration. `agent/core.mjs` implements verification and atomic application. `agent/worker.mjs` runs each independent agent. `server.mjs` hosts demo artifacts, manages the processes and local signer actions. `src/` is the visual workbench. `evidence/` contains public results only.
+`contracts/ReleaseController.sol` is the authority boundary. `lib/chain.mjs` contains SDK and QoreSign integration. `lib/relay.mjs` submits through the scoped window. `agent/core.mjs` implements verification and atomic application. `agent/worker.mjs` runs each agent. `server.mjs` hosts demo artifacts, manages the processes and local signer actions. `orbit/server.mjs` is the standalone storefront. `src/` contains the workbench and public verifier. `evidence/` contains public results.
 
 The test doubles under `contracts/test/` exist solely for Hardhat error-path testing; none is deployed to Diana. The live key-status interface decodes possession proof explicitly because the pinned EVM package's ABI has only three outputs.
 
@@ -165,6 +212,7 @@ flowchart LR
     H -->|Downloaded bytes| G2
     G1 -->|Only after checks pass| P1[North configuration]
     G2 -->|Only after checks pass| P2[South configuration]
+    P1 -->|Reads installed release| O[Standalone Orbit storefront]
 ```
 
 ```mermaid
@@ -205,12 +253,13 @@ sequenceDiagram
 | Artifact download | Actual HTTP download from the local artifact endpoint. |
 | Deployment | Actual validated JSON configuration persisted to each agent's local state file. Not Kubernetes or a production binary rollout. |
 | Mini applications | React views of the persisted configuration; they are not separately hosted production services. |
+| Standalone Orbit storefront | Separate local Node HTTP server that serves real catalog responses from North's installed release state. |
 | Tampering | A controlled change to the artifact endpoint, triggered by the operator. No real third-party system is attacked. |
 | Bronze capsule, rings and paths | SVG illustrations connected to workbench state; no physical cryptographic hardware. |
 | Agent success signatures | Real Ed25519 signatures on reports, distinct from reviewer PQ signatures. They do not prove honest execution. |
 | Local tests | Contract tests use explicit test precompiles; the live evidence separately tests actual Diana infrastructure. |
 | Public verifier | Read-only current-chain view with separately dated recorded test evidence; it has no connected local signers or agents. |
-| QoreSeal in the UI | Unfinished; installing a dependency does not mean the feature works. |
+| QoreSeal | Evaluated during research. The submitted release workflow uses QoreSign. |
 | Browser-wallet approval | Unfinished; the local demo signs using local disposable key material. |
 | Security review | Both organizer QCAI runs and our responses are in the [audit record](docs/AUDIT.md). |
 | Official drill survival | Awaiting organizer confirmation. |
