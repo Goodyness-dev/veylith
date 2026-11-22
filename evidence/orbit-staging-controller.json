@@ -1,0 +1,15 @@
+{
+  "address": "0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a",
+  "transactionHash": "0x54887d9226b95029e5805ad6e00b37a6f57ff7ccbb045e308e884560950eca8c",
+  "block": "10565598",
+  "chainId": 9800,
+  "sourceHash": "0xeb3f8be6a276c7849dc5d21056886e9d9661c60a340e07abd9d8325482480113",
+  "project": "0x000d44bf14d493156a67b7b831dd2346b06ad573be62dbb8aa1caf1dd435b341",
+  "environment": "0x8c9a74952ad0e12e8f2277ed917fcf716817325c0de1bb7a23e9265517e44d7a",
+  "reviewers": [
+    "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6",
+    "0xd13755A2AE01e3Ee4D3d88ff67315c516026f192"
+  ],
+  "threshold": 2,
+  "custody": "Both testnet reviewer keys held by the demo operator"
+}
