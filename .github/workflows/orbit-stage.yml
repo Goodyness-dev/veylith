@@ -1,0 +1,76 @@
+name: Deploy authorized Orbit build
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: Public Orbit candidate release tag
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orbit-staging-pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install hardhat compile
+      - name: Fetch the public candidate
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+        run: |
+          [[ "$CANDIDATE" =~ ^orbit-[0-9]+-[0-9]+$ ]]
+          base="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$CANDIDATE"
+          mkdir candidate
+          curl --fail --silent --show-error --location --max-time 25 --max-filesize 262144 "$base/orbit.zip" -o candidate/orbit.zip
+          curl --fail --silent --show-error --location --max-time 25 --max-filesize 65536 "$base/manifest.json" -o candidate/manifest.json
+      - name: Verify current Diana permission and stage exact bytes
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+        run: |
+          controller=$(jq -er .address evidence/orbit-staging-controller.json)
+          environment=$(jq -er .environment evidence/orbit-staging-controller.json)
+          mkdir state
+          code=$(curl --silent --show-error --max-time 25 --max-filesize 65536 \
+            -H 'Cache-Control: no-cache' -w '%{http_code}' -o current.json \
+            "https://goodyness-dev.github.io/veylith/release.json?run=$GITHUB_RUN_ID")
+          if [ "$code" = 200 ]; then
+            jq -e --arg controller "$controller" '.controller == $controller and (.sequence | test("^[1-9][0-9]*$"))' current.json
+            cp current.json state/applied.json
+          elif [ "$code" != 404 ]; then
+            echo "Current staging status unavailable (HTTP $code)" >&2
+            exit 1
+          fi
+          node orbit/apply-release.mjs "$controller" "$environment" north state candidate/orbit.zip candidate/manifest.json
+          directory=$(jq -er .releaseDirectory state/applied.json)
+          mv "state/versions/$directory" site
+          jq --arg controller "$controller" --arg candidate "$CANDIDATE" --arg deployRun "$GITHUB_RUN_ID" \
+            '. + {$controller, $candidate, $deployRun} | del(.releaseDirectory)' state/applied.json > site/release.json
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: pages

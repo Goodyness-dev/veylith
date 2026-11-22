@@ -4,7 +4,7 @@ import { pipeline } from 'node:stream/promises';
 import { createWriteStream } from 'node:fs';
 import { ZipFile } from 'yazl';
 import { keccak256 } from 'viem';
-import { PROJECT, ENVIRONMENT } from '../lib/core.mjs';
+import { PROJECT, ORBIT_STAGING } from '../lib/core.mjs';
 import { archiveFormat, readOrbitArchive } from '../lib/orbit-archive.mjs';
 
 const [output, commit, runId, collection = 'night-market'] = process.argv.slice(2);
@@ -21,7 +21,7 @@ const version = commit.slice(0, 12);
 const build = { version, commit, runId, collection };
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Orbit Commerce · ${title}</title><link rel="stylesheet" href="orbit.css"></head>
-<body class="${collection}"><main><header>ORBIT COMMERCE <a href="release">Installed release</a></header>
+<body class="${collection}"><main><header>ORBIT COMMERCE <a href="release.json">Installed release</a></header>
 <h1>${title}</h1><ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>
 <footer>Build <code>${version}</code> · <a href="build.json">Build metadata</a></footer></main></body></html>`;
 const css = `body{margin:0;background:#13232b;color:#f8fff8;font:18px system-ui}.night-market{background:#241637;color:#f5efff}
@@ -40,7 +40,7 @@ zip.end();
 await pipeline(zip.outputStream,createWriteStream(archivePath));
 const bytes = await fs.readFile(archivePath);
 const manifest = {
-  format: archiveFormat, project: PROJECT, environment: ENVIRONMENT,
+  format: archiveFormat, project: PROJECT, environment: ORBIT_STAGING,
   version, commit, runId, artifactHash: keccak256(bytes),
 };
 await readOrbitArchive(bytes, manifest);
