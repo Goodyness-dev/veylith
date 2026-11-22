@@ -1,0 +1,141 @@
+{
+  "checkedAt": "2026-11-22T17:17:50.421Z",
+  "stagingUrl": "https://goodyness-dev.github.io/veylith/",
+  "candidate": "orbit-45047940463-1",
+  "buildRun": "https://github.com/Goodyness-dev/veylith/actions/runs/45047940463",
+  "beforeApprovalRun": "https://github.com/Goodyness-dev/veylith/actions/runs/45048118232",
+  "deployRun": "https://github.com/Goodyness-dev/veylith/actions/runs/45048357775",
+  "afterRevocationRun": "https://github.com/Goodyness-dev/veylith/actions/runs/45048513354",
+  "approved": {
+    "action": "authorize",
+    "controller": "0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a",
+    "hash": "0xaeef6c06c25a4782c0118563fe776564fed6aa0c591d16357c745eca2a55bd8f",
+    "block": "10565741",
+    "build": {
+      "version": "b3d66ed5f03e",
+      "commit": "b3d66ed5f03e6e0ddac024ede650cd5efad7dd78",
+      "runId": "45047940463",
+      "collection": "night-market"
+    },
+    "request": {
+      "artifactHash": "0x835bef7ffd190de95a9a9657b884157277165bcb5bc2b35e4103506afeb5400a",
+      "manifestHash": "0x5373b21449c8a0a68576ced27a33ec0671cc093b9df86d23937562f65931e363",
+      "sequence": "1",
+      "deadline": "1795374873",
+      "policyEpoch": "1",
+      "revoked": false
+    },
+    "digest": "0x9fa6da63f1695a65fe53682f608053682e12fa1a89aff2502273cc5f28f021a6",
+    "reviewers": [
+      "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6",
+      "0xd13755A2AE01e3Ee4D3d88ff67315c516026f192"
+    ],
+    "custody": "Both keys held by the demo operator",
+    "relayer": {
+      "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+      "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+    },
+    "window": {
+      "blocks": 20,
+      "maxTxs": 1,
+      "maxValue": "492188"
+    },
+    "oneReviewer": {
+      "outcome": "refused",
+      "reason": "InvalidSignature",
+      "reviewer": "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6",
+      "digest": "0x9fa6da63f1695a65fe53682f608053682e12fa1a89aff2502273cc5f28f021a6",
+      "block": "10565731"
+    }
+  },
+  "revoked": {
+    "action": "revoke",
+    "controller": "0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a",
+    "hash": "0x5eabbc59dd11e84638b77498539094edd0c5aa9f19ba87c0a81c9f2fd419af4d",
+    "block": "10565805",
+    "build": {
+      "version": "b3d66ed5f03e",
+      "commit": "b3d66ed5f03e6e0ddac024ede650cd5efad7dd78",
+      "runId": "45047940463",
+      "collection": "night-market"
+    },
+    "request": {
+      "artifactHash": "0x835bef7ffd190de95a9a9657b884157277165bcb5bc2b35e4103506afeb5400a",
+      "manifestHash": "0x5373b21449c8a0a68576ced27a33ec0671cc093b9df86d23937562f65931e363",
+      "sequence": "2",
+      "deadline": "1795374965",
+      "policyEpoch": "1",
+      "revoked": true
+    },
+    "digest": "0x209aa6aaaf09afaf96f70da18cfa234ec011582517ca6b6a60f5da327e4f4812",
+    "reviewers": [
+      "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6",
+      "0xd13755A2AE01e3Ee4D3d88ff67315c516026f192"
+    ],
+    "custody": "Both keys held by the demo operator",
+    "relayer": {
+      "native": "qor1p72kdkfgxtar3dchc7wxpwd69aweaaqj69m9k5",
+      "evm": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412"
+    },
+    "window": {
+      "blocks": 20,
+      "maxTxs": 1,
+      "maxValue": "492188"
+    }
+  },
+  "mismatch": {
+    "outcome": "refused",
+    "controller": "0x7cBedb31D338b263303BFd47b99aaC0CF5DDD50A",
+    "identity": "north",
+    "reason": "Artifact hash mismatch",
+    "expected": "0x835bef7ffd190de95a9a9657b884157277165bcb5bc2b35e4103506afeb5400a",
+    "observed": "0x701a58d1948bccdc58e52c205c2b83571e4a3f8899e7871f5b4b5a504b25481a"
+  },
+  "south": {
+    "outcome": "refused",
+    "controller": "0x7cBedb31D338b263303BFd47b99aaC0CF5DDD50A",
+    "identity": "south",
+    "reason": "Release revoked"
+  },
+  "installed": {
+    "identity": "north",
+    "sequence": "1",
+    "artifactHash": "0x835bef7ffd190de95a9a9657b884157277165bcb5bc2b35e4103506afeb5400a",
+    "manifestHash": "0x5373b21449c8a0a68576ced27a33ec0671cc093b9df86d23937562f65931e363",
+    "block": "10565760",
+    "build": {
+      "version": "b3d66ed5f03e",
+      "commit": "b3d66ed5f03e6e0ddac024ede650cd5efad7dd78",
+      "runId": "45047940463",
+      "collection": "night-market"
+    },
+    "appliedAt": "2026-11-22T17:15:16.815Z",
+    "controller": "0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a",
+    "candidate": "orbit-45047940463-1",
+    "deployRun": "45048357775"
+  },
+  "afterRevocation": {
+    "identity": "north",
+    "sequence": "1",
+    "artifactHash": "0x835bef7ffd190de95a9a9657b884157277165bcb5bc2b35e4103506afeb5400a",
+    "manifestHash": "0x5373b21449c8a0a68576ced27a33ec0671cc093b9df86d23937562f65931e363",
+    "block": "10565760",
+    "build": {
+      "version": "b3d66ed5f03e",
+      "commit": "b3d66ed5f03e6e0ddac024ede650cd5efad7dd78",
+      "runId": "45047940463",
+      "collection": "night-market"
+    },
+    "appliedAt": "2026-11-22T17:15:16.815Z",
+    "controller": "0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a",
+    "candidate": "orbit-45047940463-1",
+    "deployRun": "45048357775"
+  },
+  "artifactHash": "0x835bef7ffd190de95a9a9657b884157277165bcb5bc2b35e4103506afeb5400a",
+  "hostedFilesMatched": [
+    "index.html",
+    "orbit.css",
+    "build.json"
+  ],
+  "custody": "One demo operator held two distinct Diana testnet reviewer keys"
+}

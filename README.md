@@ -10,11 +10,24 @@ Veylith helps release engineers verify that the exact bytes their deployment age
 
 Cosign verifies signatures over artifacts and can supply attestations for policy systems. Veylith demonstrates a deployment policy that combines a post-quantum quorum, environment binding, expiry, sequence and on-chain revocation. The restored file still matches its fingerprint after revocation, and the agent refuses to install because permission was withdrawn. [Cosign verification](https://docs.sigstore.dev/cosign/verifying/verify/)
 
-[Open the public verifier](https://veylith-gamma.vercel.app/) · [See the release we tested](#the-release-we-tested) · [How QoreChain makes this possible](#how-qorechain-makes-this-possible) · [Read the audit record](docs/AUDIT.md)
+[Try the public verifier](https://veylith-gamma.vercel.app/) · [Open the installed storefront](https://goodyness-dev.github.io/veylith/) · [See the staging proof](#public-staging-proof) · [How QoreChain makes this possible](#how-qorechain-makes-this-possible) · [Read the audit record](docs/AUDIT.md)
 
 [![Public verifier showing the approved installation, the mismatched fingerprints, the revocation refusal, and links to both Diana receipts](docs/media/public-verifier.png)](https://veylith-gamma.vercel.app/)
 
-## The release we tested
+## Public staging proof
+
+Orbit Commerce is now serving a GitHub Actions build installed through Veylith's Diana release gate. The staging controller has its own environment identifier and uses the same audited Solidity as the original demo. One demo operator held both distinct reviewer keys.
+
+| What happened | Public evidence |
+| --- | --- |
+| Before approval, GitHub Pages deployment was skipped after the gate refused the candidate. Diana also rejected the one-reviewer authorization simulation. | [First staging attempt](https://github.com/Goodyness-dev/veylith/actions/runs/45048118232) · [Recorded simulation](evidence/orbit-staging-proof.json) |
+| Two ML-DSA-87 approvals authorized the archive at sequence 1. The staging workflow verified and deployed it. | [Candidate and archive](https://github.com/Goodyness-dev/veylith/releases/tag/orbit-45047940463-1) · [Authorization receipt](https://dashboard.qorechain.io/explorer/tx/0xaeef6c06c25a4782c0118563fe776564fed6aa0c591d16357c745eca2a55bd8f) · [Successful deployment](https://github.com/Goodyness-dev/veylith/actions/runs/45048357775) |
+| A changed archive failed the fingerprint check. The exact original also failed installation after permission was revoked at sequence 2. | [Recorded installer refusals](evidence/orbit-staging-proof.json) · [Revocation receipt](https://dashboard.qorechain.io/explorer/tx/0x5eabbc59dd11e84638b77498539094edd0c5aa9f19ba87c0a81c9f2fd419af4d) · [Refused redeploy](https://github.com/Goodyness-dev/veylith/actions/runs/45048513354) |
+| The public storefront kept serving sequence 1. All three served files matched the archive byte for byte after revocation. | [Night Market storefront](https://goodyness-dev.github.io/veylith/) · [Installed release metadata](https://goodyness-dev.github.io/veylith/release.json) |
+
+GitHub Actions builds the archive and manifest. A separate workflow reads Diana, validates and stages the candidate, then passes the verified static files to the Pages deployment job. The public Pages site has no write endpoint. The workflow checks the previously published release sequence before installing another version. A repository administrator with control of workflows or Pages settings can bypass that workflow, and revocation can reach Diana between the last authorization read and the Pages deployment. Revocation controls future installation through Veylith. Rollback is a separate action.
+
+## The original local walkthrough
 
 Orbit Commerce is a standalone Node HTTP storefront. It reads North's applied release file and serves the selected products through its own page and `/catalog` endpoint. The installed configuration selects a catalog via bounded JSON. The storefront starts at sequence 0 with Everyday Essentials. A verified installation at sequence 20 switches it to Night Market. The screenshots below show those two states in the standalone service.
 

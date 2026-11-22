@@ -6,6 +6,8 @@
 
 ## Deployment and audit input
 
+The public Orbit staging controller uses the same audited Solidity and compiler settings with a distinct staging environment. On 22 November 2026, the locally compiled creation bytecode and ABI-encoded staging constructor arguments matched the full successful Diana deployment transaction input. The resulting address is `0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a`. Both testnet keys in its 2-of-2 policy were held by the demo operator. [Deployment record](../evidence/orbit-staging-controller.json) · [Staging deployment receipt](https://dashboard.qorechain.io/explorer/tx/0x54887d9226b95029e5805ad6e00b37a6f57ff7ccbb045e308e884560950eca8c) · [Release and revocation evidence](../evidence/orbit-staging-proof.json)
+
 - Contract [ReleaseController.sol](../contracts/ReleaseController.sol) at commit `d420449fafeeb49b2ea50ade39cb8ceadcd810ea`. The Solidity source last changed at `e02f1d4` before that commit.
 - Compiler Solidity 0.8.30, optimizer enabled with 200 runs, EVM target Paris. See [the Hardhat configuration](../hardhat.config.cjs).
 - Controller `0x9700232112bda62e79f20ceb862ed5e6182b9872` on Diana (chain ID `9800`). [Deployment transaction](https://dashboard.qorechain.io/explorer/tx/0xf1afd44694f743c2e87db1efcb42fe23c7e4bf292eeaed6eea0b00bcfc5d26e0)

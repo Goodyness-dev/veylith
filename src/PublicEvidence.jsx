@@ -1,4 +1,5 @@
 import React from 'react';
+import StagingProof from './StagingProof.jsx';
 import './evidence.css';
 
 const records = import.meta.glob('../evidence/orbit-walkthrough.json', { eager: true, import: 'default' });
@@ -26,6 +27,7 @@ export default function PublicEvidence({ data }) {
       <h1>Is this exact release<br />still approved?</h1>
       <p>Veylith checks that two post-quantum reviewer keys approved the bytes a deployment agent received for its target environment. The agent checks that permission again before installing.</p>
     </section>
+    <StagingProof />
     {orbit ? <section aria-labelledby="walkthrough-heading">
       <div className="judge-section-heading">
         <div><p className="eyebrow">RECORDED WALKTHROUGH · {orbit.checkedAt.slice(0, 10)} UTC</p><h2 id="walkthrough-heading">One release, three decisions</h2></div>

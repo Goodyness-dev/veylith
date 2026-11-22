@@ -11,7 +11,7 @@ export async function applyRelease({directory,identity,project,environment,fetch
  let activated=false;
  try{
   const observed=await readAuthorization();
-  const validate=a=>{if(a.project!==project||a.environment!==environment)throw new Error('Wrong project or environment');if(a.revoked)throw new Error('Release revoked');if(BigInt(a.deadline)<=BigInt(now()))throw new Error('Approval expired');if(a.policyEpoch!==a.currentPolicyEpoch)throw new Error('Policy changed');};
+  const validate=a=>{if(a.project!==project||a.environment!==environment)throw new Error('Wrong project or environment');if(BigInt(a.sequence)===0n)throw new Error('No authorized release');if(a.revoked)throw new Error('Release revoked');if(BigInt(a.deadline)<=BigInt(now()))throw new Error('Approval expired');if(a.policyEpoch!==a.currentPolicyEpoch)throw new Error('Policy changed');};
   validate(observed);
   const manifestBytes=await fetchManifest();
   if(keccak256(manifestBytes)!==observed.manifestHash)throw new Error('Manifest hash mismatch');

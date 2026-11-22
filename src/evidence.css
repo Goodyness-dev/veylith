@@ -32,3 +32,10 @@
 .judge-live { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .judge-live dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 0; max-width: 100%; }
 @media (max-width: 760px) { .judge-decisions { grid-template-columns: 1fr; } }
+.judge-staging { margin: 36px 0; padding: clamp(12px, 3vw, 26px); border: 1px solid #ffffff29; border-radius: 12px; background: #121e1b; }
+.judge-staging .three-stage { position: relative; width: 100%; height: clamp(190px, 35vw, 330px); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+.judge-checks { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.judge-checks button { color: #effdf5; background: #233c32; border: 1px solid #83ad9870; border-radius: 7px; padding: 8px 12px; cursor: pointer; }
+.judge-checks button:disabled { opacity: .65; cursor: wait; }
+.judge-verification { min-height: 40px; }
+.judge-staging .judge-note { margin-bottom: 0; }
