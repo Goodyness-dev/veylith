@@ -1,0 +1,45 @@
+name: Build Orbit candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      collection:
+        description: Orbit collection to build
+        type: choice
+        default: night-market
+        options:
+          - night-market
+          - essentials
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Build and fingerprint the storefront
+        env:
+          ORBIT_COLLECTION: ${{ inputs.collection }}
+        run: node orbit/build-release.mjs dist/orbit "$GITHUB_SHA" "$GITHUB_RUN_ID" "$ORBIT_COLLECTION"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: orbit-${{ github.run_id }}
+          path: |
+            dist/orbit/orbit.zip
+            dist/orbit/manifest.json
+          if-no-files-found: error
+      - name: Publish candidate archive and manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="orbit-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          gh release create "$tag" dist/orbit/orbit.zip dist/orbit/manifest.json \
+            --target "$GITHUB_SHA" --prerelease --title "Orbit candidate ${GITHUB_SHA:0:12}" \
+            --notes "Candidate from $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. Deployment requires Diana authorization."

@@ -4,6 +4,7 @@ import { keccak256, getAddress, toBytes } from 'viem';
 import { deriveUnifiedAccount } from '@qorechain/sdk';
 import { client, nativeChain, readJson, signatures } from '../lib/chain.mjs';
 import { configurationOf, publicJson } from '../lib/core.mjs';
+import { archiveFormat, readOrbitArchive } from '../lib/orbit-archive.mjs';
 import { relayAccount, relayRelease } from '../lib/relay.mjs';
 
 const [command, input, ...args] = process.argv.slice(2);
@@ -62,15 +63,16 @@ async function inspect(packet) {
 
 async function checkBytes(packet, artifactPath, manifestPath) {
   const [artifact, manifest] = await Promise.all([artifactPath, manifestPath].map(file => fs.readFile(file)));
-  const configuration = configurationOf(artifact);
   assert.ok(manifest.length <= 65_536, 'Manifest exceeds 64 KiB');
   assert.equal(keccak256(artifact), packet.request.artifactHash, 'Artifact bytes do not match');
   assert.equal(keccak256(manifest), packet.request.manifestHash, 'Manifest bytes do not match');
   const m = JSON.parse(manifest);
-  assert.equal(m.format, 'veylith-release-v1');
   assert.equal(m.project, packet.project);
   assert.equal(m.environment, packet.environment);
   assert.equal(m.artifactHash, packet.request.artifactHash);
+  if (m.format === archiveFormat) return { build: (await readOrbitArchive(artifact, m)).build };
+  assert.equal(m.format, 'veylith-release-v1');
+  const configuration = configurationOf(artifact);
   assert.equal(m.version, configuration.release);
   return configuration;
 }

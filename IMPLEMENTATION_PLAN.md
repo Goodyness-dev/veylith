@@ -1,5 +1,7 @@
 # Veylith submission implementation plan
 
+The [final submission plan](docs/FINAL_SUBMISSION_PLAN.md) covers the remaining work for the CI-built release, independent review and public staging proof.
+
 **Progress on 21 November 2026.** The standalone service passed 12 Diana walkthrough checks. The Vercel verifier serves those recorded results and reads live Diana state. The authorization and revocation receipts both resolved successfully on Diana. A live simulation rejected one approval and accepted two solo demo keys. Both QCAI reports and our responses are in the [audit record](docs/AUDIT.md). The final submission closes **3 December at 00:59 WAT**. [Public verifier](https://veylith-gamma.vercel.app/) · [Official prize conditions](https://build.qorechain.io/prizes)
 
 The public entry links to the updated verifier and the earlier demo video. Its description and kit selections still reflect the earlier version. Update the fields below from the signed-in builder dashboard. [Submitted project](https://build.qorechain.io/p/veylith)
