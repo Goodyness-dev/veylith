@@ -1,1 +1,2 @@
 /docs/audit/*.pdf binary
+contracts/ReleaseController.sol text eol=lf

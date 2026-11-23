@@ -6,6 +6,8 @@
 
 ## Deployment and audit input
 
+Run `npm run proof:contract` after installing dependencies to recompile the source and verify the full creation input and receipt against Diana. [Proof command source](../scripts/proof-contract.mjs)
+
 The public Orbit staging controller uses the same audited Solidity and compiler settings with a distinct staging environment. On 22 November 2026, the locally compiled creation bytecode and ABI-encoded staging constructor arguments matched the full successful Diana deployment transaction input. The resulting address is `0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a`. Both testnet keys in its 2-of-2 policy were held by the demo operator. [Deployment record](../evidence/orbit-staging-controller.json) · [Staging deployment receipt](https://dashboard.qorechain.io/explorer/tx/0x54887d9226b95029e5805ad6e00b37a6f57ff7ccbb045e308e884560950eca8c) · [Release and revocation evidence](../evidence/orbit-staging-proof.json)
 
 - Contract [ReleaseController.sol](../contracts/ReleaseController.sol) at commit `d420449fafeeb49b2ea50ade39cb8ceadcd810ea`. The Solidity source last changed at `e02f1d4` before that commit.
@@ -16,6 +18,8 @@ The public Orbit staging controller uses the same audited Solidity and compiler 
 - Audit setting **Ethereum (EVM/Solidity)** for both stages. QCAI currently reports EVM quantum readiness as “Not scored”. [Organizer FAQ](https://build.qorechain.io/faq)
 
 ## PQC design and tests
+
+On 23 November 2026, a separate read-only simulation repeated the quorum check on the Orbit staging controller `0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a` at Diana block `10613199`. An unrelated relayer simulated the same proposed policy with zero, one and two approvals. The first two calls reverted with `InvalidSignature` and the two-key call succeeded. One operator held both keys. [Staging simulation record](../evidence/orbit-staging-quorum.json)
 
 | Boundary | Runtime protection | Hardhat coverage |
 | --- | --- | --- |

@@ -3,7 +3,15 @@
   "transactionHash": "0x54887d9226b95029e5805ad6e00b37a6f57ff7ccbb045e308e884560950eca8c",
   "block": "10565598",
   "chainId": 9800,
+  "nativeChain": "qorechain-diana",
+  "sourceRevision": "d420449fafeeb49b2ea50ade39cb8ceadcd810ea",
   "sourceHash": "0xeb3f8be6a276c7849dc5d21056886e9d9661c60a340e07abd9d8325482480113",
+  "compiler": {
+    "version": "0.8.30+commit.73712a01",
+    "optimizerEnabled": true,
+    "optimizerRuns": 200,
+    "evmVersion": "paris"
+  },
   "project": "0x000d44bf14d493156a67b7b831dd2346b06ad573be62dbb8aa1caf1dd435b341",
   "environment": "0x8c9a74952ad0e12e8f2277ed917fcf716817325c0de1bb7a23e9265517e44d7a",
   "reviewers": [

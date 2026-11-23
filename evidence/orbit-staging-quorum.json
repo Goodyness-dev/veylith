@@ -1,0 +1,33 @@
+{
+  "chainId": 9800,
+  "controller": "0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a",
+  "block": "10613199",
+  "blockHash": "0x94f95c3d8e5f6e24145fe2c9cab6e4fec4023e553d6b10ecbcbc2b90309764bb",
+  "observedAt": "2026-11-23T12:04:09.851Z",
+  "method": "eth_call",
+  "relayer": "0x0f9566D92832fa38B717c79c60B9ba2f5d9ef412",
+  "digest": "0x4646f001fd551c7291b18f3863293efa0f66c16d28d20e39ec211a5d1d07d6cb",
+  "proposedReviewers": [
+    "0x0Aa69572B608550D9b9C1f0032D0A28e73D0eFF6",
+    "0xd13755A2AE01e3Ee4D3d88ff67315c516026f192"
+  ],
+  "proposedThreshold": 2,
+  "proposedSequence": "3",
+  "deadline": "1795439045",
+  "checks": [
+    {
+      "approvals": 0,
+      "result": "InvalidSignature"
+    },
+    {
+      "approvals": 1,
+      "result": "InvalidSignature"
+    },
+    {
+      "approvals": 2,
+      "result": "Success"
+    }
+  ],
+  "custody": "Both testnet reviewer keys held by the demo operator",
+  "broadcast": false
+}

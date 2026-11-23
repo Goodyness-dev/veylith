@@ -12,6 +12,18 @@ Cosign verifies signatures over artifacts and can supply attestations for policy
 
 [Try the public verifier](https://veylith-gamma.vercel.app/) · [Open the installed storefront](https://goodyness-dev.github.io/veylith/) · [See the staging proof](#public-staging-proof) · [How QoreChain makes this possible](#how-qorechain-makes-this-possible) · [Read the audit record](docs/AUDIT.md)
 
+## Verify the contract and quorum
+
+The table links to the evidence for each check. From a checkout with Node.js 22 or newer, run `npm ci && npm run proof:contract` to reproduce the deployment match, or `npm run proof:staging` to reproduce the fresh-install refusal after installing dependencies.
+
+| Judge’s question | Result and evidence |
+| --- | --- |
+| **Is the audited code the code we deployed?** | The proof recompiles the pinned source with Solidity 0.8.30, 200 optimizer runs and the Paris EVM target. It ABI-encodes the recorded constructor arguments and matches the full creation input on Diana. The successful receipt created staging controller `0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a` at block `10565598`. [Audited source revision](https://github.com/Goodyness-dev/veylith/blob/d420449fafeeb49b2ea50ade39cb8ceadcd810ea/contracts/ReleaseController.sol) · [Source hash, compiler and constructor inputs](evidence/orbit-staging-controller.json) · [Deployment receipt](https://dashboard.qorechain.io/explorer/tx/0x54887d9226b95029e5805ad6e00b37a6f57ff7ccbb045e308e884560950eca8c) · [Proof command source](scripts/proof-contract.mjs) |
+| **Can someone rotate the reviewer policy without quorum?** | QCAI flagged **“Missing Access Control on Policy Change.”** The original Diana simulation used controller `0x9700232112bda62e79f20ceb862ed5e6182b9872` at block `10493964`. A separate simulation used staging controller `0x7cbedb31d338b263303bfd47b99aac0cf5ddd50a` at block `10613199`. For each pinned proposal, zero and one approvals returned `InvalidSignature` and two distinct ML-DSA-87 approvals passed. These were read-only calls. One operator held both demo keys. [Rotation code](contracts/ReleaseController.sol#L53) · [Named regression test](test/contracts/controller.cjs#L31) · [Original simulation and audit response](docs/AUDIT.md) · [Staging simulation record](evidence/orbit-staging-quorum.json) |
+| **What does revocation actually do?** | Veylith blocked a fresh install of the original archive. The running storefront continued serving the build installed at sequence 1. The proof compares the storefront’s live files with the approved archive byte for byte. [Approval at sequence 1](https://dashboard.qorechain.io/explorer/tx/0xaeef6c06c25a4782c0118563fe776564fed6aa0c591d16357c745eca2a55bd8f) · [Revocation at sequence 2](https://dashboard.qorechain.io/explorer/tx/0x5eabbc59dd11e84638b77498539094edd0c5aa9f19ba87c0a81c9f2fd419af4d) · [Refused redeploy](https://github.com/Goodyness-dev/veylith/actions/runs/45048513354) · [Clean reproduction](https://github.com/Goodyness-dev/veylith/actions/runs/45169081150) |
+
+Both QCAI reports rated the contract High at 65/100. The linked response traces each finding to the relevant code, test or simulation. [Stage 1 PDF](docs/audit/2026-11-21-stage-1-qcai.pdf) · [Stage 2 PDF](docs/audit/2026-11-21-stage-2-qcai.pdf) · [Finding-by-finding response](docs/AUDIT.md#qcai-reports-and-finding-dispositions)
+
 [![Public verifier showing the approved installation, the mismatched fingerprints, the revocation refusal, and links to both Diana receipts](docs/media/public-verifier.png)](https://veylith-gamma.vercel.app/)
 
 ## Public staging proof
