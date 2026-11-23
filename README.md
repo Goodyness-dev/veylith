@@ -16,6 +16,14 @@ Cosign verifies signatures over artifacts and can supply attestations for policy
 
 ## Public staging proof
 
+From a fresh checkout of this public repository with Node.js 22 or newer, run:
+
+```sh
+npm ci && npm run proof:staging
+```
+
+The command downloads the archive and manifest from GitHub, checks both receipts and current permission directly on QoreChain Diana, and runs the real staging installer in a fresh temporary directory. It expects `Release revoked` and an empty install directory. It also checks that the public Orbit storefront still serves sequence 1 and compares each hosted release file byte for byte with the archive. A network error, changed chain state, or different deployed build makes the command exit with an error. Run `npm run proof:staging` on subsequent runs. [Proof runner](scripts/proof-staging.mjs) · [Staging installer](agent/core.mjs)
+
 Orbit Commerce is now serving a GitHub Actions build installed through Veylith's Diana release gate. The staging controller has its own environment identifier and uses the same audited Solidity as the original demo. One demo operator held both distinct reviewer keys.
 
 | What happened | Public evidence |
