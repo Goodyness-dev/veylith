@@ -10,7 +10,7 @@ Veylith helps release engineers verify that the exact bytes their deployment age
 
 Cosign verifies signatures over artifacts and can supply attestations for policy systems. Veylith demonstrates a deployment policy that combines a post-quantum quorum, environment binding, expiry, sequence and on-chain revocation. The restored file still matches its fingerprint after revocation, and the agent refuses to install because permission was withdrawn. [Cosign verification](https://docs.sigstore.dev/cosign/verifying/verify/)
 
-[Try the public verifier](https://veylith-gamma.vercel.app/) · [Open the installed storefront](https://goodyness-dev.github.io/veylith/) · [See the staging proof](#public-staging-proof) · [How QoreChain makes this possible](#how-qorechain-makes-this-possible) · [Read the audit record](docs/AUDIT.md)
+[Explore the 3D workbench](https://veylith-gamma.vercel.app/) · [Judge verification](https://veylith-gamma.vercel.app/?view=judge) · [Open the installed storefront](https://goodyness-dev.github.io/veylith/) · [See the staging proof](#public-staging-proof) · [How QoreChain makes this possible](#how-qorechain-makes-this-possible) · [Read the audit record](docs/AUDIT.md)
 
 ## Verify the contract and quorum
 
@@ -24,7 +24,7 @@ The table links to the evidence for each check. From a checkout with Node.js 22 
 
 Both QCAI reports rated the contract High at 65/100. The linked response traces each finding to the relevant code, test or simulation. [Stage 1 PDF](docs/audit/2026-11-21-stage-1-qcai.pdf) · [Stage 2 PDF](docs/audit/2026-11-21-stage-2-qcai.pdf) · [Finding-by-finding response](docs/AUDIT.md#qcai-reports-and-finding-dispositions)
 
-[![Public verifier showing the approved installation, the mismatched fingerprints, the revocation refusal, and links to both Diana receipts](docs/media/public-verifier.png)](https://veylith-gamma.vercel.app/)
+[![Public verifier showing the approved installation, the mismatched fingerprints, the revocation refusal, and links to both Diana receipts](docs/media/public-verifier.png)](https://veylith-gamma.vercel.app/?view=judge)
 
 ## Public staging proof
 
@@ -123,9 +123,9 @@ The proof ends with the release revoked. Already applied demo configurations rem
 
 ## Run locally
 
-### Vercel public verifier
+### Vercel workbench and judge verification
 
-`vercel.json` builds the Vite frontend and deploys read-only `/api/state` and `/api/proof` functions. The public page queries the current Diana controller; recorded actions and test evidence are dated separately. It does not run reviewer signers or local agent processes. A failed chain read never substitutes the historical chain snapshot as live state.
+`vercel.json` builds the Vite frontend and deploys the read-only public API. The homepage opens the 3D workbench with recorded deliveries and live Diana status. **Judge verification** opens the archive checks, receipts and evidence at `/?view=judge`. Use the local workbench for reviewer signing and live agent operations. The public views label an unavailable Diana read separately from the recorded results.
 
 Import this GitHub repository into Vercel using the Vite preset, or run `npx vercel --prod` after Vercel login. No signing environment variables are needed. `.vercelignore` excludes local runtime/signing material; public API imports have no dependency on `lib/chain.mjs` or the local signer service.
 

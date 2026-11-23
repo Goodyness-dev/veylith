@@ -18,6 +18,7 @@ export default function PublicEvidence({ data }) {
     <header className="judge-header">
       <a className="wordmark" href="/">VEY<span>L</span>ITH<span className="symbol">✳</span></a>
       <nav className="judge-header-links" aria-label="Project resources">
+        <a href="/">← Back to workbench</a>
         <a href="https://github.com/Goodyness-dev/veylith/blob/main/docs/AUDIT.md">QCAI audit ↗</a>
         <a href="https://github.com/Goodyness-dev/veylith">Source ↗</a>
       </nav>

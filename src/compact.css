@@ -1,4 +1,20 @@
 /* One-screen desktop mission. Smaller/shorter windows retain natural scrolling. */
+.app header .judge-verification-link {
+ display:inline-flex;
+ align-items:center;
+ min-height:32px;
+ padding:5px 11px;
+ border:1px solid #82bca3;
+ border-radius:4px;
+ color:#b4f2d2;
+ white-space:nowrap;
+}
+.app header .judge-verification-link:hover,
+.app header .judge-verification-link:focus-visible { background:#244738; }
+@media(max-width:480px){
+ .app header nav a[href="#crossing"] { display:none; }
+ .app header .judge-verification-link { padding-inline:7px; }
+}
 @media(min-width:960px) and (min-height:600px){
  header{height:50px;padding:0 22px}.wordmark{font-size:20px;letter-spacing:4px}.wordmark .symbol{font-size:25px}nav{font-size:11px}
  #crossing{height:calc(100dvh - 50px);max-width:none;padding:10px 20px;display:grid;grid-template-columns:225px minmax(0,1fr) 330px;grid-template-rows:54px minmax(0,1fr) 137px 23px;grid-template-areas:'intro intro intro' 'review world apps' 'mission mission mission' 'footer footer footer';gap:10px}
